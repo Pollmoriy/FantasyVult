@@ -310,15 +310,15 @@ QWidget#scrollAreaWidgetContents {
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-424</y>
+      <y>0</y>
       <width>1920</width>
-      <height>3400</height>
+      <height>3600</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>1920</width>
-      <height>3400</height>
+      <height>3600</height>
      </size>
     </property>
     <widget class="QWidget" name="cardContainer" native="true">
@@ -327,7 +327,7 @@ QWidget#scrollAreaWidgetContents {
        <x>0</x>
        <y>0</y>
        <width>1920</width>
-       <height>3400</height>
+       <height>3600</height>
       </rect>
      </property>
      <property name="minimumSize">
