@@ -11,10 +11,12 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QFontDatabase>
 #include <QFont>
-#include <QDebug>
+#include <QMessageBox>
+#include <QDialog>
 
+
+// ==================== Создание карточки вселенной ====================
 QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &imagePath, QWidget *parent)
 {
     qDebug() << "Создание карточки с именем:" << name << " и изображением:" << imagePath;
@@ -38,6 +40,7 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     imageLabel->setStyleSheet("border: none;");
     imageLabel->setGeometry(0, 0, 566, 321);
 
+    // Кнопка лайка
     QPushButton *likeButton = new QPushButton(universeCard);
     likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
     likeButton->setIconSize(QSize(71, 67));
@@ -54,6 +57,7 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
         }
     });
 
+    // Нижняя панель с названием
     QFrame *infoFrame = new QFrame(universeCard);
     infoFrame->setGeometry(0, 313, 566, 58);
     infoFrame->setStyleSheet(
@@ -73,46 +77,13 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     nameLabel->setWordWrap(true);
     nameLabel->setGeometry(0, 295, 566, 77);
 
-    // Убираем добавление сюда!
-    // if (ui->horizontalLayout_3) {
-    //    ui->horizontalLayout_3->addWidget(cardWidget);
-    //    qDebug() << "Карточка добавлена в rowContainer!";
-    // } else {
-    //    qDebug() << "Ошибка: horizontalLayout_3 не найден!";
-    // }
-
     return cardWidget;
 }
 
-
-
-
-CatalogForm::CatalogForm(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::mainContainer)
+// ==================== Очистка всех карточек с экрана ====================
+void CatalogForm::clearCards()
 {
-    ui->setupUi(this);
-
-    // Проверка и установка компоновки для контейнера карточек
-    if (!ui->cardContainer->layout()) {
-        ui->cardContainer->setLayout(new QVBoxLayout());
-        qDebug() << "Создан новый layout для cardContainer.";
-    }
-
-    QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
-
-
-    // Пример загрузки названия (позже подключим к БД)
-    QSqlDatabase db = QSqlDatabase::database(); // Получаем уже открытое соединение по умолчанию
-
-    QSqlQuery query(db);
-    if (!query.exec("SELECT name, main_image FROM Universe WHERE id_universe IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14) ORDER BY id_universe")) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
-        return;
-    }
-
-    // Список горизонтальных лэйаутов - создайте 7 в .ui с именами: horizontalLayout_4, ..., horizontalLayout_10
-    QList<QHBoxLayout*> rows = {
+    QList<QHBoxLayout*> horizontalLayouts = {
         ui->horizontalLayout_3,
         ui->horizontalLayout_4,
         ui->horizontalLayout_5,
@@ -122,6 +93,212 @@ CatalogForm::CatalogForm(QWidget *parent)
         ui->horizontalLayout_9
     };
 
+    for (QHBoxLayout* hlayout : horizontalLayouts) {
+        if (!hlayout) continue;
+        QLayoutItem* item;
+        while ((item = hlayout->takeAt(0)) != nullptr) {
+            QWidget* widget = item->widget();
+            if (widget) {
+                widget->setParent(nullptr);
+                widget->deleteLater();
+            }
+            delete item;
+        }
+    }
+
+    if (emptyResultLabel) {
+        emptyResultLabel->hide();
+    }
+}
+
+// ==================== Загрузка и отображение карточек по фильтру ====================
+void CatalogForm::loadUniverses(const QString& filter)
+{
+    clearCards();
+
+    QSqlDatabase db = QSqlDatabase::database();
+    QSqlQuery query(db);
+
+    QString sqlQuery;
+    if (filter.isEmpty()) {
+        sqlQuery = "SELECT name, main_image FROM Universe";
+    } else {
+        sqlQuery = "SELECT name, main_image FROM Universe WHERE name LIKE :filter";
+    }
+
+    if (!query.prepare(sqlQuery)) {
+        qDebug() << "Ошибка подготовки запроса:" << query.lastError().text();
+        return;
+    }
+
+    if (!filter.isEmpty()) {
+        query.bindValue(":filter", "%" + filter + "%");
+    }
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        return;
+    }
+
+    QList<QHBoxLayout*> horizontalLayouts = {
+        ui->horizontalLayout_3,
+        ui->horizontalLayout_4,
+        ui->horizontalLayout_5,
+        ui->horizontalLayout_6,
+        ui->horizontalLayout_7,
+        ui->horizontalLayout_8,
+        ui->horizontalLayout_9
+    };
+
+    int cardCount = 0;
+    int rowIndex = 0;
+
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        QString imagePath = query.value(1).toString();
+
+        QWidget* card = createUniverseCard(name, imagePath, ui->cardContainer);
+        if (!card) continue;
+
+        if (rowIndex >= horizontalLayouts.size()) {
+            qDebug() << "Превышено количество строк, дополнительные карточки не добавлены";
+            break;
+        }
+
+        horizontalLayouts[rowIndex]->addWidget(card);
+        cardCount++;
+
+        if (cardCount % 2 == 0) {
+            rowIndex++;
+        }
+    }
+
+    // Возвращаем количество найденных карточек
+    // (сохраняем для обработки во внешнем методе)
+    this->foundCardsCount = cardCount;
+}
+
+// ==================== Обработчик кнопки поиска ====================
+void CatalogForm::onSearchButtonClicked()
+{
+    QString filterText = ui->searchLineEdit->text().trimmed();
+
+    loadUniverses(filterText);
+
+    // Если ничего не найдено — показать наш милый кастомный диалог, НЕ очищать каталог
+    if (foundCardsCount == 0) {
+        showNoResultsDialog(filterText);
+
+        // После этого снова загрузить ВСЕ вселенные (чтобы каталог не пустел)
+        loadUniverses("");
+    }
+}
+
+
+// ==================== Вызов ошибки поиска ====================
+void CatalogForm::showNoResultsDialog(const QString& searchText)
+{
+    QDialog dialog(this);
+    dialog.setWindowTitle("Результат поиска");
+    dialog.setFixedSize(500, 220);
+    dialog.setStyleSheet("background-color: #FFE6E6;");
+
+    // Основной вертикальный лэйаут
+    QVBoxLayout* mainLayout = new QVBoxLayout(&dialog);
+
+    // Горизонтальный лэйаут для иконки и текста
+    QHBoxLayout* contentLayout = new QHBoxLayout();
+
+    // Иконка слева
+    QLabel* iconLabel = new QLabel(&dialog);
+    QPixmap iconPixmap(":/images/cute_icon.png");
+    if (iconPixmap.isNull()) {
+        qDebug() << "Ошибка: иконка не загружена!";
+    }
+    iconLabel->setPixmap(iconPixmap.scaled(150, 150, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    iconLabel->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+    contentLayout->addWidget(iconLabel);
+
+    // Текст справа, центрированный, с белым фоном и отступом снизу
+    QLabel* textLabel = new QLabel(&dialog);
+    textLabel->setText(QString("В нашей базе знаний не найдена вселенная с названием:\n\"%1\"").arg(searchText));
+    textLabel->setAlignment(Qt::AlignCenter);
+    textLabel->setWordWrap(true);
+    textLabel->setStyleSheet(
+        "background-color: white;"
+        "font-family: 'Roboto Condensed', sans-serif;"
+        "font-size: 30px;"
+        "color: black;"
+        "padding: 10px 10px 10px 10px;"  // Отступ снизу 50px для кнопки
+        "border-radius: 10px;"
+        );
+    contentLayout->addWidget(textLabel, /*stretch=*/1);
+
+    mainLayout->addLayout(contentLayout);
+
+    // Кнопка OK внизу по центру
+    QPushButton* okButton = new QPushButton("OK", &dialog);
+    okButton->setFixedSize(100, 40);
+    okButton->setStyleSheet(
+        "QPushButton {"
+        "  background-color: #FFB6B9;"
+        "  border-radius: 10px;"
+        "  font-size: 20px;"
+        "}"
+        "QPushButton:hover {"
+        "  background-color: #FF7B7B;"
+        "}"
+        "QPushButton:pressed {"
+        "  background-color: #FF4C4C;"
+        "}"
+        );
+    mainLayout->addWidget(okButton, 0, Qt::AlignCenter);
+
+    // Соединяем кнопку с закрытием диалога и очисткой строки ввода
+    connect(okButton, &QPushButton::clicked, &dialog, &QDialog::accept);
+    connect(&dialog, &QDialog::accepted, this, [this]() {
+        ui->searchLineEdit->clear();
+    });
+
+    dialog.exec();
+}
+
+// ==================== Конструктор ====================
+CatalogForm::CatalogForm(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::mainContainer)
+{
+    ui->setupUi(this);
+
+    emptyResultLabel = nullptr;
+
+    // Проверяем, есть ли layout у контейнера для карточек
+    if (!ui->cardContainer->layout()) {
+        ui->cardContainer->setLayout(new QVBoxLayout());
+        qDebug() << "Создан новый layout для cardContainer.";
+    }
+
+    QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/Roboto_Condensed-Regular.ttf");
+
+
+    // Загрузка начального списка вселенных (можно позже заменить на loadUniverses(""))
+    QSqlDatabase db = QSqlDatabase::database();
+    QSqlQuery query(db);
+    if (!query.exec("SELECT name, main_image FROM Universe WHERE id_universe IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14) ORDER BY id_universe")) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        return;
+    }
+
+    QList<QHBoxLayout*> rows = {
+        ui->horizontalLayout_3,
+        ui->horizontalLayout_4,
+        ui->horizontalLayout_5,
+        ui->horizontalLayout_6,
+        ui->horizontalLayout_7,
+        ui->horizontalLayout_8,
+        ui->horizontalLayout_9
+    };
 
     int cardIndex = 0;
     while (query.next()) {
@@ -141,22 +318,20 @@ CatalogForm::CatalogForm(QWidget *parent)
         }
 
         rows[rowNum]->addWidget(card);
-
         ++cardIndex;
     }
-
-
 
     // Установка фонового изображения
     QPixmap pixmap2(":/images/catalog_background_img.jpg");
     ui->backgroundLabel->setPixmap(pixmap2.scaled(ui->backgroundLabel->size(),
-                                                 Qt::IgnoreAspectRatio,
-                                                 Qt::SmoothTransformation));
+                                                  Qt::IgnoreAspectRatio,
+                                                  Qt::SmoothTransformation));
 
-
+    // Подключаем сигнал кнопки поиска к слоту
+    connect(ui->searchButton, &QPushButton::clicked, this, &CatalogForm::onSearchButtonClicked);
 }
 
-// Деструктор
+// ==================== Деструктор ====================
 CatalogForm::~CatalogForm()
 {
     delete ui;

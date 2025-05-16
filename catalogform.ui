@@ -192,7 +192,7 @@ QLabel:hover {
       <number>306</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="emailLineEdit">
+      <widget class="QLineEdit" name="searchLineEdit">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
     border: 2px solid black;

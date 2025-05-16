@@ -39,6 +39,7 @@
         <file>images/test_background_img.jpg</file>
         <file>images/witcher.png</file>
         <file>images/wow.png</file>
+        <file>images/cute_icon.png</file>
     </qresource>
     <qresource lang="&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/fonts&quot;>&#xa;        &lt;file>fonts/Raleway-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Roboto-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Cinzel-Regular.ttf&lt;/file>&#xa;    &lt;/qresource>&#xa;&lt;/RCC>&#xa;" prefix="/">
         <file>fonts/CinzelDecorative-Bold.ttf</file>
