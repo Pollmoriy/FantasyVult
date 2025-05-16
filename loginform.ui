@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginForm</class>
+ <widget class="QWidget" name="LoginForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1920</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>LoginForm</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QLabel" name="backgroundLabel">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1920</width>
+     <height>1080</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>99999</width>
+     <height>99999</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+    background-image: url(:/images/background.png);
+    background-position: center;
+    background-repeat: no-repeat;
+background-size: cover;
+}
+
+QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 40px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>130</y>
+     <width>1561</width>
+     <height>844</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox {
+    /* Градиентная заливка */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(252, 217, 150, 255), /* цвет сверху */
+                                stop:1 rgba(157, 66, 0, 255));   /* цвет снизу */
+    /* Выравнивание по центру */
+    margin: 0px; /* Убираем внешние отступы */
+    padding: 0px; /* Убираем внутренние отступы */
+    border: none; /* Убираем рамку */
+    /* Настройка выравнивания */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 475px;  /* Устанавливаем ширину (попробуй варьировать, если нужно) */
+    height: 844px; /* Устанавливаем высоту (попробуй варьировать, если нужно) */
+
+}
+</string>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>475</width>
+      <height>844</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    background-image: url(:/images/login_img.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>60</y>
+      <width>1081</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: url(:/fonts/Raleway-Bold.ttf);
+    font-weight: bold;
+    font-size: 45px;
+    color: black;
+    }</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добро пожаловать, искатель приключений!&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="emailLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>270</y>
+      <width>905</width>
+      <height>108</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 30px;
+    font-family: 'Raleway';
+    color: black;
+    background-color: white;
+}
+
+</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="passwordLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>500</y>
+      <width>905</width>
+      <height>108</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 30px;
+    font-family: 'Raleway';
+    color: black;
+    background-color: white;
+}
+
+</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="enter_email_label">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>209</y>
+      <width>351</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: #000000;
+}</string>
+    </property>
+    <property name="text">
+     <string>Введите e-mail</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="enter_password_label">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>429</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: #000000;
+}</string>
+    </property>
+    <property name="text">
+     <string>Введите пароль</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LoginButton">
+    <property name="geometry">
+     <rect>
+      <x>577</x>
+      <y>670</y>
+      <width>275</width>
+      <height>115</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 40px;
+}
+
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный чёрный фон с 40% непрозрачностью */
+}</string>
+    </property>
+    <property name="text">
+     <string>Log In</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="firstTimeButton">
+    <property name="geometry">
+     <rect>
+      <x>979</x>
+      <y>670</y>
+      <width>458</width>
+      <height>115</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 40px;
+}
+
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный чёрный фон с 40% непрозрачностью */
+}</string>
+    </property>
+    <property name="text">
+     <string>Впервые зашёл?</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,11 @@
+debug/catalogform.o
+debug/loginform.o
+debug/main.o
+debug/mainwindow.o
+debug/registerform.o
+debug/utils.o
+debug/qrc_resources.o
+debug/moc_catalogform.o
+debug/moc_loginform.o
+debug/moc_mainwindow.o
+debug/moc_registerform.o

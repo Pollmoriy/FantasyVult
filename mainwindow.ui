@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="backgroundLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1920</width>
+      <height>1080</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>506</x>
+      <y>345</y>
+      <width>907</width>
+      <height>540</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+background-image: url(:/symbols/Fantasy Vault.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    
+}
+</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>990</y>
+      <width>651</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+background-image: url(:/symbols/creator_ shevtcova polina.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QFrame" name="menuframe">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>55</y>
+      <width>1920</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame {
+    background-color: rgba(201, 29, 55, 100); /* Цвет с прозрачностью */
+}
+
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>1926</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>110</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>474</number>
+      </property>
+      <property name="rightMargin">
+       <number>474</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="mainlabel">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: #330C24;
+background-color: transparent;
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string>Главная</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="cataloglabel">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #330C24;       /* Цвет при наведении */
+}</string>
+        </property>
+        <property name="text">
+         <string>Каталог</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="favlabel">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #330C24;       /* Цвет при наведении */
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string>Любимое</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="testlabel">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #330C24;       /* Цвет при наведении */
+}</string>
+        </property>
+        <property name="text">
+         <string>Тесты</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>-50</x>
+      <y>220</y>
+      <width>1969</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>1941</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>27</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>303</number>
+      </property>
+      <property name="rightMargin">
+       <number>306</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="emailLineEdit">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 30px;
+    font-family: 'Raleway';
+    color: black;
+    background-color: white;
+}
+
+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="searchButton">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: white;
+    border-radius: 20px;
+    width: 86px;
+    height: 81px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #E6E6E6;
+}
+QPushButton:pressed {
+    background-color: #CCCCCC;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/symbols/search.svg</normaloff>:/symbols/search.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>71</width>
+          <height>64</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #F9B9A7;
+    border-radius: 20px;
+    width: 95px;
+    height: 81px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #E8A392;
+}
+QPushButton:pressed {
+    background-color: #D48B7D;
+}
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/symbols/Filter.svg</normaloff>:/symbols/Filter.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>69</width>
+          <height>60</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="menuframe_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>330</y>
+      <width>1920</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame {
+    background-color: rgba(143, 146, 173, 1.0); /* Цвет с прозрачностью */
+}
+
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QWidget" name="horizontalLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1931</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="spacing">
+       <number>110</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>474</number>
+      </property>
+      <property name="rightMargin">
+       <number>474</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="mainlabel_2">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #1C1B45;       /* Цвет при наведении */
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string>Главная</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="cataloglabel_2">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: #1C1B45;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string>Каталог</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="favlabel_2">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #1C1B45;       /* Цвет при наведении */
+}
+
+</string>
+        </property>
+        <property name="text">
+         <string>Любимое</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="testlabel_2">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #1C1B45;       /* Цвет при наведении */
+}</string>
+        </property>
+        <property name="text">
+         <string>Тесты</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

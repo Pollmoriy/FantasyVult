@@ -1,0 +1,56 @@
+[33mcommit f7a365992d617d290b596ea51139028836020d6a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: polina <6704523472@my.lerna.by>
+Date:   Fri May 16 13:55:31 2025 +0300
+
+    Сделала карточки и ряды для каталога
+
+FantasyVult.pro
+FantasyVult.pro.user
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QFont.C33E38861815C84E.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QIcon.E2D524079E5BF961.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QScrollArea.2E3314D869A9182F.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/QVBoxLayout.7633F4C2BFAB8513.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/catalogform.cpp.5C42B62E3041D126.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/catalogform.h.91685E22E1072B9F.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/main.cpp.BBCAE1C60A18D279.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qabstractscrollarea.h.88A192709962CBCD.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/qscrollarea.h.9871029E56394831.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ui_catalogform.h.88DFF6E93DFF5BF2.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/.qtc_clangd/.cache/clangd/index/ui_mainwindow.h.614928B5598004B4.idx
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Makefile.Debug
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/Makefile.Release
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/FantasyVult.exe
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/catalogform.o
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/mainwindow.o
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/moc_catalogform.o
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/qrc_resources.cpp
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/debug/qrc_resources.o
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/ui_catalogform.h
+build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/ui_mainwindow.h
+catalogform.cpp
+catalogform.h
+catalogform.ui
+catalogform.ui.autosave
+fantasy.db
+fonts/Cinzel-Regular.ttf
+fonts/CinzelDecorative-Regular.ttf
+images/arcane.png
+images/avatar.png
+images/dragon_age.png
+images/dxd.png
+images/elden_scrolls.png
+images/final_fantasy.png
+images/got.png
+images/grishaverse.png
+images/harrypotter.jpg
+images/harrypotter.png
+images/lor.png
+images/narnia.png
+images/naruto.png
+images/witcher.png
+images/wow.png
+mainwindow.ui
+resources.qrc
+symbols/Filter.svg
+symbols/heart_pink.svg
+symbols/heart_white.svg
