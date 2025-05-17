@@ -820,16 +820,13 @@ QPushButton[selected=&quot;true&quot;] {
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>3292</width>
-      <height>891</height>
+      <width>1665</width>
+      <height>901</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayoutTags">
      <property name="spacing">
       <number>44</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
      </property>
      <property name="topMargin">
       <number>100</number>
@@ -837,6 +834,131 @@ QPushButton[selected=&quot;true&quot;] {
      <property name="bottomMargin">
       <number>55</number>
      </property>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags">
+       <property name="spacing">
+        <number>44</number>
+       </property>
+       <property name="leftMargin">
+        <number>128</number>
+       </property>
+       <property name="rightMargin">
+        <number>139</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnTagBooks">
+         <property name="text">
+          <string>КНИГИ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagCityFantasy">
+         <property name="minimumSize">
+          <size>
+           <width>541</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>541</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ГОРОДСКОЕ ФЭНТЕЗИ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagEpicFantasy">
+         <property name="minimumSize">
+          <size>
+           <width>541</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>541</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ЭПИЧЕСКОЕ ФЭНТЕЗИ</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_2">
+       <property name="spacing">
+        <number>88</number>
+       </property>
+       <property name="leftMargin">
+        <number>67</number>
+       </property>
+       <property name="rightMargin">
+        <number>62</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnTagAnime">
+         <property name="text">
+          <string>АНИМЕ/МУЛЬТФИЛЬМЫ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagPolitics">
+         <property name="minimumSize">
+          <size>
+           <width>570</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>570</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ПОЛИТИКА И ИНТРИГИ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagGames">
+         <property name="minimumSize">
+          <size>
+           <width>182</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>182</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ИГРЫ</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_3"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_4"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_5"/>
+     </item>
     </layout>
    </widget>
   </widget>
