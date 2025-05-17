@@ -14,6 +14,10 @@
 #include <QFont>
 #include <QMessageBox>
 #include <QDialog>
+#include <QPainter>
+#include <QPainterPath>
+#include <QPropertyAnimation>
+
 
 
 // ==================== Создание карточки вселенной ====================
@@ -263,6 +267,20 @@ void CatalogForm::showNoResultsDialog(const QString& searchText)
     dialog.exec();
 }
 
+
+// ==================== Отображение окна тегов ====================
+void CatalogForm::toggleFilterFrame()
+{
+    if (ui->tagsFrame->isVisible()) {
+        ui->tagsFrame->hide();
+    } else {
+        ui->tagsFrame->show();
+    }
+}
+
+
+
+
 // ==================== Конструктор ====================
 CatalogForm::CatalogForm(QWidget *parent)
     : QWidget(parent)
@@ -270,7 +288,7 @@ CatalogForm::CatalogForm(QWidget *parent)
 {
     ui->setupUi(this);
 
-    emptyResultLabel = nullptr;
+    ui->tagsFrame->hide();
 
     // Проверяем, есть ли layout у контейнера для карточек
     if (!ui->cardContainer->layout()) {
@@ -327,8 +345,33 @@ CatalogForm::CatalogForm(QWidget *parent)
                                                   Qt::IgnoreAspectRatio,
                                                   Qt::SmoothTransformation));
 
+    // Установка фонового изображения с закругленными углами
+    QPixmap pixmap3(":/images/button_background.jpg");
+    QPixmap roundedPixmap(ui->teg_backlabel->size());
+    roundedPixmap.fill(Qt::transparent); // Прозрачный фон
+
+    QPainter painter(&roundedPixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    // Создаем закругленную маску
+    QPainterPath path;
+    path.addRoundedRect(roundedPixmap.rect(), 45, 45); // Радиус углов 20
+
+    painter.setClipPath(path); // Обрезаем углы
+    painter.drawPixmap(0, 0, pixmap3.scaled(ui->teg_backlabel->size(),
+                                            Qt::IgnoreAspectRatio,
+                                            Qt::SmoothTransformation));
+    painter.end();
+
+    ui->teg_backlabel->setPixmap(roundedPixmap);
+
+
     // Подключаем сигнал кнопки поиска к слоту
     connect(ui->searchButton, &QPushButton::clicked, this, &CatalogForm::onSearchButtonClicked);
+
+    connect(ui->filterButton, &QPushButton::clicked, this, &CatalogForm::toggleFilterFrame);
+
 }
 
 // ==================== Деструктор ====================

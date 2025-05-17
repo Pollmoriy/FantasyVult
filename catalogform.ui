@@ -241,7 +241,7 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="filterButton">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -310,7 +310,7 @@ QWidget#scrollAreaWidgetContents {
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
+      <y>-709</y>
       <width>1920</width>
       <height>3600</height>
      </rect>
@@ -754,10 +754,97 @@ QWidget#scrollAreaWidgetContents {
     <string/>
    </property>
   </widget>
+  <widget class="QFrame" name="tagsFrame">
+   <property name="geometry">
+    <rect>
+     <x>137</x>
+     <y>82</y>
+     <width>1645</width>
+     <height>893</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame{
+background: transparent;
+
+}
+/* Основные теги */
+QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 40px;
+    min-height: 104px;
+    max-height: 104px;
+}
+QPushButton:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Кнопка при выборе */
+QPushButton[selected=&quot;true&quot;] {
+    background-color: #610741;
+}</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
+   </property>
+   <widget class="QLabel" name="teg_backlabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1645</width>
+      <height>893</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>3292</width>
+      <height>891</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayoutTags">
+     <property name="spacing">
+      <number>44</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>100</number>
+     </property>
+     <property name="bottomMargin">
+      <number>55</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
   <zorder>backgroundLabel</zorder>
   <zorder>menuframe</zorder>
   <zorder>widget</zorder>
   <zorder>scrollArea</zorder>
+  <zorder>tagsFrame</zorder>
  </widget>
  <resources>
   <include location="resources.qrc"/>

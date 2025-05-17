@@ -23,6 +23,7 @@ public:
 
 private slots:
     void onSearchButtonClicked();
+    void toggleFilterFrame();
 
 private:
     Ui::mainContainer *ui;
