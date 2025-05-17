@@ -310,7 +310,7 @@ QWidget#scrollAreaWidgetContents {
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-709</y>
+      <y>0</y>
       <width>1920</width>
       <height>3600</height>
      </rect>
@@ -820,7 +820,7 @@ QPushButton[selected=&quot;true&quot;] {
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1665</width>
+      <width>1697</width>
       <height>901</height>
      </rect>
     </property>
@@ -1059,7 +1059,119 @@ QPushButton[selected=&quot;true&quot;] {
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayoutTags_5"/>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_5">
+       <property name="spacing">
+        <number>164</number>
+       </property>
+       <property name="leftMargin">
+        <number>159</number>
+       </property>
+       <property name="rightMargin">
+        <number>93</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnClearSelection">
+         <property name="minimumSize">
+          <size>
+           <width>501</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>501</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: black;
+    background-color: white;
+    border-radius: 40px;
+    min-height: 104px;
+    max-height: 104px;
+}
+QPushButton:hover {
+    background-color: rgba(255, 199, 222, 0.8);
+
+}</string>
+         </property>
+         <property name="text">
+          <string>ОЧИСТИТЬ ВЫБОР</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnCloseTagsWindow">
+         <property name="minimumSize">
+          <size>
+           <width>248</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>248</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: black;
+    background-color: white;
+    border-radius: 40px;
+    min-height: 104px;
+    max-height: 104px;
+}
+QPushButton:hover {
+    background-color: rgba(255, 199, 222, 0.8);
+
+}</string>
+         </property>
+         <property name="text">
+          <string>ЗАКРЫТЬ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnApplySelection">
+         <property name="minimumSize">
+          <size>
+           <width>316</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>316</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    font-family: 'Roboto';
+    font-size: 45px;
+    color: black;
+    background-color: white;
+    border-radius: 40px;
+    min-height: 104px;
+    max-height: 104px;
+}
+QPushButton:hover {
+background-color: rgba(255, 199, 222, 0.8);
+
+}</string>
+         </property>
+         <property name="text">
+          <string>ПРИМЕНИТЬ</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
