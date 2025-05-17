@@ -847,6 +847,11 @@ QPushButton[selected=&quot;true&quot;] {
        </property>
        <item>
         <widget class="QPushButton" name="btnTagBooks">
+         <property name="styleSheet">
+          <string notr="true">QPushButton[selected=&quot;true&quot;] {
+    background-color: #610741;
+}</string>
+         </property>
          <property name="text">
           <string>КНИГИ</string>
          </property>
@@ -951,10 +956,107 @@ QPushButton[selected=&quot;true&quot;] {
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayoutTags_3"/>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_3">
+       <property name="spacing">
+        <number>117</number>
+       </property>
+       <property name="leftMargin">
+        <number>112</number>
+       </property>
+       <property name="rightMargin">
+        <number>148</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnTagDragons">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ДРАКОНЫ И МОНСТРЫ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagMagic">
+         <property name="minimumSize">
+          <size>
+           <width>183</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>183</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>МАГИЯ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagAdventure">
+         <property name="minimumSize">
+          <size>
+           <width>408</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>408</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ПРИКЛЮЧЕНИЯ</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayoutTags_4"/>
+      <layout class="QHBoxLayout" name="horizontalLayoutTags_4">
+       <property name="spacing">
+        <number>147</number>
+       </property>
+       <property name="leftMargin">
+        <number>232</number>
+       </property>
+       <property name="rightMargin">
+        <number>300</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btnTagMovies">
+         <property name="text">
+          <string>ФИЛЬМЫ/СЕРИАЛЫ</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTagDarkFantasy">
+         <property name="minimumSize">
+          <size>
+           <width>457</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>457</width>
+           <height>104</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ТЁМНОЕ ФЭНТЕЗИ</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayoutTags_5"/>
