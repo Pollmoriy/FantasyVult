@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FavoriteForm</class>
+ <widget class="QWidget" name="FavoriteForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLabel" name="backgroundLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QFrame" name="menuframe">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>55</y>
+     <width>1920</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame {
+    background-color: rgba(220, 131, 155, 0.39); /* Цвет с прозрачностью */
+}
+
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1931</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>110</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>474</number>
+     </property>
+     <property name="rightMargin">
+      <number>474</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="mainlabel">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #6E2537;       /* Цвет при наведении */
+}
+
+</string>
+       </property>
+       <property name="text">
+        <string>Главная</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="cataloglabel">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #6E2537;       /* Цвет при наведении */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Каталог</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="favlabel">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: #6E2537;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Любимое</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="testlabel">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+background-color: transparent;
+ transition: all 0.3s ease;
+}
+
+QLabel:hover {
+    color: #6E2537;       /* Цвет при наведении */
+}</string>
+       </property>
+       <property name="text">
+        <string>Тесты</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>270</y>
+     <width>1921</width>
+     <height>811</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QScrollArea {
+    background-color: transparent;
+}
+
+QWidget#scrollAreaWidgetContents {
+    background-color: transparent;
+}</string>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1920</width>
+      <height>3600</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1920</width>
+      <height>3600</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="cardContainer" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1920</width>
+       <height>3600</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>1920</width>
+       <height>3400</height>
+      </size>
+     </property>
+     <widget class="QFrame" name="rowContainer">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget#rowContainer {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>-1</x>
+        <y>720</y>
+        <width>1911</width>
+        <height>2681</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout"/>
+     </widget>
+     <widget class="QFrame" name="rowContainer_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>518</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>1036</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>1554</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_7">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>2072</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_8">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_6">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>2590</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_9">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_7">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>3108</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_10">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

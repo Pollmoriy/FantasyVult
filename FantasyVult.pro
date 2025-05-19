@@ -12,24 +12,31 @@ CONFIG += c++17
 
 SOURCES += \
     catalogform.cpp \
+    favoriteform.cpp \
     loginform.cpp \
     main.cpp \
     mainwindow.cpp \
     registerform.cpp \
+    testsform.cpp \
     utils.cpp
 
 HEADERS += \
+    ClickableLabel.h \
     catalogform.h \
+    favoriteform.h \
     loginform.h \
     mainwindow.h \
     registerform.h \
+    testsform.h \
     utils.h
 
 FORMS += \
     catalogform.ui \
+    favoriteform.ui \
     loginform.ui \
     mainwindow.ui \
-    registerform.ui
+    registerform.ui \
+    testsform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

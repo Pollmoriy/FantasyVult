@@ -22,6 +22,7 @@ public:
     void loadUniverses(const QString& filter);
     void showNoResultsDialog(const QString& searchText);
     void loadUniversesByTags(const QStringList& selectedTags);
+     QSet<QString> likedUniverses;  // множество уникальных имён вселенных, которые лайкнули
 
 private slots:
     void onSearchButtonClicked();

@@ -18,7 +18,7 @@
 #include <QPropertyAnimation>
 #include <QPushButton>
 #include <QStyle>
-
+#include "ClickableLabel.h"
 
 
 
@@ -54,13 +54,22 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     likeButton->setStyleSheet("background: transparent; border: none;");
     likeButton->setGeometry(475, 20, 71, 67);
     likeButton->setCheckable(true);
-    connect(likeButton, &QPushButton::clicked, [likeButton]() {
+
+    // Если вселенная уже лайкнута, поставим кнопку в checked
+    if (likedUniverses.contains(name)) {
+        likeButton->setChecked(true);
+        likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
+    }
+
+    connect(likeButton, &QPushButton::clicked, [this, likeButton, name]() {
         if (likeButton->isChecked()) {
             likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
-            qDebug() << "Лайк поставлен!";
+            likedUniverses.insert(name);
+            qDebug() << "Лайк поставлен на:" << name;
         } else {
             likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
-            qDebug() << "Лайк снят!";
+            likedUniverses.remove(name);
+            qDebug() << "Лайк снят с:" << name;
         }
     });
 
