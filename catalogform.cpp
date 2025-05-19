@@ -8,7 +8,6 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QLabel>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFont>
@@ -17,6 +16,10 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QPropertyAnimation>
+#include <QPushButton>
+#include <QStyle>
+
+
 
 
 
@@ -280,15 +283,224 @@ void CatalogForm::toggleFilterFrame()
 
 
 
+// ==================== Реализация слота нажатия на кнопку тега ====================
+void CatalogForm::onTagButtonClicked() {
+    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    if (!button) return;
+
+    bool isSelected = button->property("selected").toBool();
+    button->setProperty("selected", !isSelected);
+
+    // Обновляем стиль кнопки
+    button->style()->unpolish(button);
+    button->style()->polish(button);
+    button->update();
+
+    // Получаем текст тега из кнопки
+    QString tagName = button->text();
+
+    // Добавляем или удаляем тег из множества
+    if (!isSelected) {
+        selectedTags.insert(tagName);
+        qDebug() << "Тег добавлен:" << tagName;
+    } else {
+        selectedTags.remove(tagName);
+        qDebug() << "Тег удален:" << tagName;
+    }
+
+    qDebug() << "Выбранные теги:" << selectedTags;
+}
+
+
+
+
+
+// ==================== Функция для установки начального стиля кнопки ====================
+void CatalogForm::setupTagButton(QPushButton* button) {
+    button->setProperty("selected", false);  // Изначально не выбрана
+    button->setStyleSheet(R"(
+        QPushButton[selected="false"] {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Roboto';
+            font-size: 45px;
+            border-radius: 40px;
+        }
+        QPushButton[selected="false"]:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        QPushButton[selected="true"] {
+            background-color: #610741;
+            color: #FFFFFF;
+            font-family: 'Roboto';
+            font-size: 45px;
+            border-radius: 40px;
+        }
+        QPushButton[selected="true"]:hover {
+            opacity: 0.7;  /* Полупрозрачность при наведении */
+        }
+    )");
+
+    // Подключаем слот к кнопке
+    connect(button, &QPushButton::clicked, this, &CatalogForm::onTagButtonClicked);
+}
+
+
+
+
+// ==================== // Функция для подключения сигнала к слоту ====================
+void CatalogForm::connectTagButton(QPushButton* button) {
+    connect(button, &QPushButton::clicked, this, [=]() {
+        bool isSelected = button->property("selected").toBool();
+        button->setProperty("selected", !isSelected);
+
+        // Обновляем стиль кнопки
+        button->style()->unpolish(button);
+        button->style()->polish(button);
+        button->update();
+    });
+}
+
+
+// ==================== Очистка всех выбранных тегов ====================
+void CatalogForm::clearTagSelection()
+{
+    // Перебираем все виджеты внутри контейнера с тегами
+    QList<QPushButton*> allButtons = ui->tagsFrame->findChildren<QPushButton*>();
+
+    for (QPushButton* button : allButtons) {
+        if (selectedTags.contains(button->text())) {
+            // Меняем состояние на "невыбранное"
+            button->setProperty("selected", false);
+
+            // Обновляем стиль кнопки
+            button->style()->unpolish(button);
+            button->style()->polish(button);
+            button->update();
+        }
+    }
+
+    // Очищаем список выбранных тегов (строк)
+    selectedTags.clear();
+}
+
+
+// ==================== // Применение фильтрации по тегам ====================
+void CatalogForm::applyTagSelection()
+{
+    if (selectedTags.isEmpty()) {
+        // Если список выбранных тегов пуст — загрузить весь каталог
+        loadUniverses("");
+        ui->tagsFrame->hide();
+        return;
+    }
+
+    // Преобразуем выбранные теги в нижний регистр для корректного поиска
+    QStringList tagsList;
+    for (const QString& tag : selectedTags) {
+        tagsList << tag.toLower();  // Приводим к нижнему регистру
+    }
+
+    loadUniversesByTags(tagsList);
+    ui->tagsFrame->hide();
+}
+
+
+
+
+// ==================== // Фильтрация по тегам ====================
+void CatalogForm::loadUniversesByTags(const QStringList& tagsList)
+{
+    clearCards();
+
+    if (tagsList.isEmpty()) {
+        loadUniverses("");  // Загружаем все, если тегов нет
+        return;
+    }
+
+    QSqlDatabase db = QSqlDatabase::database();
+    QSqlQuery query(db);
+
+    // Формируем условие с AND, чтобы все теги были в колонке tegs
+    QStringList conditions;
+    for (const QString& tag : tagsList) {
+        conditions << QString("LOWER(tegs) LIKE '%%1%'").arg(tag.toLower());
+    }
+    QString conditionString = conditions.join(" AND ");
+    QString sqlQuery = QString("SELECT name, main_image FROM Universe WHERE %1").arg(conditionString);
+
+    if (!query.prepare(sqlQuery)) {
+        qDebug() << "Ошибка подготовки запроса:" << query.lastError().text();
+        return;
+    }
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        return;
+    }
+
+    QList<QHBoxLayout*> horizontalLayouts = {
+        ui->horizontalLayout_3,
+        ui->horizontalLayout_4,
+        ui->horizontalLayout_5,
+        ui->horizontalLayout_6,
+        ui->horizontalLayout_7,
+        ui->horizontalLayout_8,
+        ui->horizontalLayout_9
+    };
+
+    int cardCount = 0;
+    int rowIndex = 0;
+
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        QString imagePath = query.value(1).toString();
+
+        QWidget* card = createUniverseCard(name, imagePath, ui->cardContainer);
+        if (!card) continue;
+
+        if (rowIndex >= horizontalLayouts.size()) {
+            qDebug() << "Превышено количество строк, дополнительные карточки не добавлены";
+            break;
+        }
+
+        horizontalLayouts[rowIndex]->addWidget(card);
+        cardCount++;
+
+        if (cardCount % 2 == 0) {
+            rowIndex++;
+        }
+    }
+
+    if (cardCount == 0) {
+        qDebug() << "Не найдено ни одной вселенной с указанными тегами.";
+    }
+}
+
+
 
 // ==================== Конструктор ====================
 CatalogForm::CatalogForm(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::mainContainer)
+    , ui(new Ui::CatalogForm)
 {
     ui->setupUi(this);
 
     ui->tagsFrame->hide();
+
+
+    // Настраиваем каждую теговую кнопку
+    setupTagButton(ui->btnTagBooks);
+    setupTagButton(ui->btnTagEpicFantasy);
+    setupTagButton(ui->btnTagCityFantasy);
+    setupTagButton(ui->btnTagAnime);
+    setupTagButton(ui->btnTagPolitics);
+    setupTagButton(ui->btnTagGames);
+    setupTagButton(ui->btnTagDragons);
+    setupTagButton(ui->btnTagMagic);
+    setupTagButton(ui->btnTagAdventure);
+    setupTagButton(ui->btnTagMovies);
+    setupTagButton(ui->btnTagDarkFantasy);
 
     // Проверяем, есть ли layout у контейнера для карточек
     if (!ui->cardContainer->layout()) {
@@ -369,8 +581,11 @@ CatalogForm::CatalogForm(QWidget *parent)
 
     // Подключаем сигнал кнопки поиска к слоту
     connect(ui->searchButton, &QPushButton::clicked, this, &CatalogForm::onSearchButtonClicked);
-
     connect(ui->filterButton, &QPushButton::clicked, this, &CatalogForm::toggleFilterFrame);
+    connect(ui->btnCloseTagsWindow, &QPushButton::clicked, this, &CatalogForm::toggleFilterFrame);
+   connect(ui->btnClearSelection, &QPushButton::clicked, this, &CatalogForm::clearTagSelection);
+   connect(ui->btnApplySelection, &QPushButton::clicked, this, &CatalogForm::applyTagSelection);
+
 
 }
 
