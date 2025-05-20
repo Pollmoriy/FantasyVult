@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    buttonstyles.cpp \
     catalogform.cpp \
     favoriteform.cpp \
     loginform.cpp \
@@ -21,7 +22,7 @@ SOURCES += \
     utils.cpp
 
 HEADERS += \
-    ClickableLabel.h \
+    buttonstyles.h \
     catalogform.h \
     favoriteform.h \
     loginform.h \

@@ -31,6 +31,12 @@ private slots:
     void clearTagSelection();
      void applyTagSelection();
 
+    void goToMain();
+    void goToCatalog();
+    void goToFavorite();
+    void goToTests();
+
+
 private:
     Ui::CatalogForm *ui;
     QLabel* emptyResultLabel = nullptr;
@@ -39,6 +45,9 @@ private:
      QSet<QString> selectedTags;
     void setupTagButton(QPushButton* button);
     void connectTagButton(QPushButton* button);
+
+    QPushButton* activeButton = nullptr; // если еще не добавляла
+    void setActiveButton(QPushButton* newActive);
 };
 
 #endif // CATALOGFORM_H

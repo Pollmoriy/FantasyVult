@@ -127,15 +127,15 @@ background-image: url(:/symbols/creator_ shevtcova polina.jpg);
        <number>474</number>
       </property>
       <item>
-       <widget class="QLabel" name="mainlabel">
+       <widget class="QPushButton" name="btnMain">
         <property name="styleSheet">
-         <string notr="true">QLabel {
-    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+         <string notr="true">QPushButton {
+    font-family: Roboto Condensed, sans-serif;
     font-size: 45px;
     color: #330C24;
-background-color: transparent;
+    background-color: transparent;
+    border: none;
 }
-
 </string>
         </property>
         <property name="text">
@@ -144,18 +144,19 @@ background-color: transparent;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="cataloglabel">
+       <widget class="QPushButton" name="btnCatalog">
         <property name="styleSheet">
-         <string notr="true">QLabel {
+         <string notr="true">QPushButton {
     font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
     font-size: 45px;
     color: white;
-background-color: transparent;
- transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
 }
 
-QLabel:hover {
-    color: #330C24;       /* Цвет при наведении */
+QPushButton:hover {
+    color: #330C24; /* При наведении */
 }</string>
         </property>
         <property name="text">
@@ -164,21 +165,20 @@ QLabel:hover {
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="favlabel">
+       <widget class="QPushButton" name="btnFavorite">
         <property name="styleSheet">
-         <string notr="true">QLabel {
+         <string notr="true">QPushButton {
     font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
     font-size: 45px;
     color: white;
-background-color: transparent;
- transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
 }
 
-QLabel:hover {
-    color: #330C24;       /* Цвет при наведении */
-}
-
-</string>
+QPushButton:hover {
+    color: #330C24; /* При наведении */
+}</string>
         </property>
         <property name="text">
          <string>Любимое</string>
@@ -186,19 +186,21 @@ QLabel:hover {
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="testlabel">
+       <widget class="QPushButton" name="btnTests">
         <property name="styleSheet">
-         <string notr="true">QLabel {
+         <string notr="true">QPushButton {
     font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
     font-size: 45px;
     color: white;
-background-color: transparent;
- transition: all 0.3s ease;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
 }
 
-QLabel:hover {
-    color: #330C24;       /* Цвет при наведении */
-}</string>
+QPushButton:hover {
+    color: #330C24; /* При наведении */
+}
+</string>
         </property>
         <property name="text">
          <string>Тесты</string>

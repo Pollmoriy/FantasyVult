@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QSet>
 #include <QString>
+#include <QPushButton>
+
 
 namespace Ui {
 class FavoriteForm;
@@ -23,6 +25,15 @@ public:
 private:
     Ui::FavoriteForm *ui;
     QSet<QString> likedUniverses;
+    QPushButton* activeButton = nullptr; // если еще не добавляла
+    void setActiveButton(QPushButton* newActive);
+
+private slots:
+    void goToMain();
+    void goToCatalog();
+    void goToFavorite();
+    void goToTests();
+
 };
 
 #endif // FAVORITEFORM_H

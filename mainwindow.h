@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +21,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QPushButton* activeButton = nullptr; // если еще не добавляла
+    void setActiveButton(QPushButton* newActive);
+
+
+private slots:
+    void goToMain();
+    void goToCatalog();
+    void goToFavorite();
+    void goToTests();
+
 };
 #endif // MAINWINDOW_H

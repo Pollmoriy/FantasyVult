@@ -1,4 +1,7 @@
 #include "catalogform.h"
+#include "mainwindow.h"
+#include "favoriteform.h"
+#include "testsform.h"
 #include "ui_catalogform.h"
 #include <QFontDatabase>
 #include <QSqlDatabase>
@@ -18,7 +21,67 @@
 #include <QPropertyAnimation>
 #include <QPushButton>
 #include <QStyle>
-#include "ClickableLabel.h"
+#include "buttonstyles.h"
+
+
+
+// ==================== // Активная кнопка навигации ====================
+void CatalogForm::setActiveButton(QPushButton* newActive)
+{
+    // Сбросить стиль у предыдущей кнопки
+    if (activeButton && activeButton != newActive) {
+        activeButton->setStyleSheet(defaultButtonStyle);
+    }
+
+    // Назначить новую активную кнопку
+    activeButton = newActive;
+
+    // Применить активный стиль
+    activeButton->setStyleSheet(activeButtonStyle);
+}
+
+
+// ==================== // Переход на главную ====================
+void CatalogForm::goToMain()
+{
+    setActiveButton(ui->btnMain); // Пример
+    MainWindow* mainWindow = new MainWindow();
+    mainWindow->show();
+    this->close();
+}
+
+
+// ==================== // Переход на каталог ====================
+void CatalogForm::goToCatalog()
+{
+    setActiveButton(ui->btnCatalog);
+    CatalogForm* catalogform = new CatalogForm();
+    catalogform->show();
+    this->close();
+}
+
+
+// ==================== // Переход на любимую ====================
+void CatalogForm::goToFavorite()
+{
+    setActiveButton(ui->btnFavorite);
+    FavoriteForm* favoriteform = new FavoriteForm();
+    favoriteform->show();
+    this->close();
+}
+
+
+
+// ==================== // Переход на тесты ====================
+void CatalogForm::goToTests()
+{
+    setActiveButton(ui->btnTests);
+    TestsForm* testsform = new TestsForm();
+    testsform->show();
+    this->close();
+}
+
+
 
 
 
@@ -595,6 +658,11 @@ CatalogForm::CatalogForm(QWidget *parent)
    connect(ui->btnClearSelection, &QPushButton::clicked, this, &CatalogForm::clearTagSelection);
    connect(ui->btnApplySelection, &QPushButton::clicked, this, &CatalogForm::applyTagSelection);
 
+
+   connect(ui->btnMain, &QPushButton::clicked, this, &CatalogForm::goToMain);
+   connect(ui->btnCatalog, &QPushButton::clicked, this, &CatalogForm::goToCatalog);
+   connect(ui->btnFavorite, &QPushButton::clicked, this, &CatalogForm::goToFavorite);
+   connect(ui->btnTests, &QPushButton::clicked, this, &CatalogForm::goToTests);
 
 }
 
