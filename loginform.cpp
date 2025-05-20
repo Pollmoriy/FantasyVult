@@ -11,43 +11,9 @@
 #include <QSqlError>
 #include <QCryptographicHash>
 
-//Хэширование
 
 
-
-LoginForm::LoginForm(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::LoginForm)
-{
-
-    ui->setupUi(this);
-
-    //Подключаем слод для перехода на регистрацию
-    connect(ui->firstTimeButton, &QPushButton::clicked, this, &LoginForm::onFirstTimeButtonClicked);
-
-    QFontDatabase::addApplicationFont(":/fonts/Raleway-Regular.ttf");
-    QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf");
-    QFontDatabase::addApplicationFont(":/fonts/Cinzel-Regular.ttf");
-
-    // Загружаем изображение и растягиваем его на размер QLabel
-    QPixmap pixmap(":/images/background.png");
-    ui->backgroundLabel->setPixmap(pixmap.scaled(ui->backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
-    shadow->setOffset(-19, 35);     // Смещение по осям X и Y
-    shadow->setBlurRadius(8.4);     // Радиус размытия
-    shadow->setColor(QColor(0, 0, 0, 255));  // Чёрный цвет с полной непрозрачностью
-
-    ui->groupBox->setGraphicsEffect(shadow);
-
-    connect(ui->LoginButton, &QPushButton::clicked, this, &LoginForm::onLoginButtonClicked);
-}
-
-LoginForm::~LoginForm()
-{
-    delete ui;
-}
-
+// ==================== // Обработка нажатия кнопки "Зашел впервые" ====================//
 void LoginForm::onFirstTimeButtonClicked()
 {
     RegisterForm* registerForm = new RegisterForm();
@@ -56,7 +22,7 @@ void LoginForm::onFirstTimeButtonClicked()
 }
 
 
-// Обработка нажатия кнопки "Войти"
+// ==================== // Обработка нажатия кнопки "Войти" ====================//
 void LoginForm::onLoginButtonClicked()
 {
     QString email = ui->emailLineEdit->text().trimmed();
@@ -99,6 +65,61 @@ void LoginForm::onLoginButtonClicked()
     } else {
         QMessageBox::warning(this, "Ошибка", "Пользователь с таким email не найден.");
     }
+}
+
+
+// ==================== // Отображение пароля в виде звездочек ====================//
+void LoginForm::togglePasswordVisibility()
+{
+    passwordVisible = !passwordVisible;
+
+    if (passwordVisible) {
+        ui->passwordLineEdit->setEchoMode(QLineEdit::Normal);
+        ui->togglePasswordButton->setIcon(QIcon("://symbols/open_eye.svg"));
+
+    } else {
+        ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
+        ui->togglePasswordButton->setIcon(QIcon("://symbols/close_eye.svg"));
+
+    }
+}
+
+
+
+
+LoginForm::LoginForm(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::LoginForm)
+{
+
+    ui->setupUi(this);
+
+    //Подключаем слод для перехода на регистрацию
+    connect(ui->firstTimeButton, &QPushButton::clicked, this, &LoginForm::onFirstTimeButtonClicked);
+
+    QFontDatabase::addApplicationFont(":/fonts/Raleway-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/Roboto-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/Cinzel-Regular.ttf");
+
+    // Загружаем изображение и растягиваем его на размер QLabel
+    QPixmap pixmap(":/images/background.png");
+    ui->backgroundLabel->setPixmap(pixmap.scaled(ui->backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
+    shadow->setOffset(-19, 35);     // Смещение по осям X и Y
+    shadow->setBlurRadius(8.4);     // Радиус размытия
+    shadow->setColor(QColor(0, 0, 0, 255));  // Чёрный цвет с полной непрозрачностью
+
+    ui->groupBox->setGraphicsEffect(shadow);
+
+    connect(ui->LoginButton, &QPushButton::clicked, this, &LoginForm::onLoginButtonClicked);
+    connect(ui->togglePasswordButton, &QPushButton::clicked, this, &LoginForm::togglePasswordVisibility);
+
+}
+
+LoginForm::~LoginForm()
+{
+    delete ui;
 }
 
 

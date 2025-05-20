@@ -59,5 +59,7 @@
         <file>symbols/search.svg</file>
         <file>symbols/heart_white.svg</file>
         <file>symbols/heart_pink.svg</file>
+        <file>symbols/close_eye.svg</file>
+        <file>symbols/open_eye.svg</file>
     </qresource>
 </RCC>

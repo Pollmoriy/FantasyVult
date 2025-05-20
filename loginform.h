@@ -17,9 +17,12 @@ public:
 
 private:
     Ui::LoginForm *ui;
+     bool passwordVisible = false;
+
 private slots:  // Добавляем секцию слотов
     void onFirstTimeButtonClicked();  // Объявляем слот
     void onLoginButtonClicked();
+    void togglePasswordVisibility();
 };
 
 #endif // LOGINFORM_H

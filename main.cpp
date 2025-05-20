@@ -1,6 +1,5 @@
 #include <QCoreApplication>
 #include "loginform.h"
-#include "mainwindow.h"
 #include <QApplication>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
         qDebug() << "База данных успешно подключена!";
     }
 
-MainWindow m;
+    LoginForm m;
     m.show();
     QSqlQuery query;
 

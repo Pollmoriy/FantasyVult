@@ -16,7 +16,7 @@
 //Регистрация, проверка пароля и почты. Хэшширование
 
 
-
+// ==================== // Проверка пароля ====================//
 bool isPasswordStrong(const QString &password) {
     if (password.length() < 7) {
         return false;
@@ -30,6 +30,8 @@ bool isPasswordStrong(const QString &password) {
     return true;
 }
 
+
+// ==================== // Обработка Регистрации ====================//
 void RegisterForm::on_registerButton_clicked() {
     QString email = ui->emailLineEdit->text().trimmed();
     QString password = ui->passwordLineEdit->text().trimmed();
@@ -101,7 +103,53 @@ void RegisterForm::on_registerButton_clicked() {
     }
 }
 
-//Конец регистрации
+
+
+// ==================== // Обработка перехода на страницу авторизации ====================//
+void RegisterForm::onReturnButtonClicked()
+{
+    // Создаём объект окна регистрации
+    LoginForm* loginForm = new LoginForm();
+
+    // Показываем форму регистрации
+    loginForm->show();
+
+    // Закрываем форму авторизации
+    this->close();
+}
+
+
+// ==================== // Отображение пароля в виде звездочек ====================//
+void RegisterForm::togglePasswordVisibility()
+{
+    passwordVisible = !passwordVisible;
+
+    if (passwordVisible) {
+        ui->passwordLineEdit->setEchoMode(QLineEdit::Normal);
+        ui->togglePasswordButton->setIcon(QIcon("://symbols/open_eye.svg"));
+
+    } else {
+        ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
+        ui->togglePasswordButton->setIcon(QIcon("://symbols/close_eye.svg"));
+
+    }
+}
+void RegisterForm::togglePasswordVisibility2()
+{
+    passwordVisible = !passwordVisible;
+
+    if (passwordVisible) {
+        ui->confirmPasswordLineEdit->setEchoMode(QLineEdit::Normal);
+        ui->togglePasswordButton2->setIcon(QIcon("://symbols/open_eye.svg"));
+
+    } else {
+        ui->confirmPasswordLineEdit->setEchoMode(QLineEdit::Password);
+        ui->togglePasswordButton2->setIcon(QIcon("://symbols/close_eye.svg"));
+
+    }
+}
+
+
 
 RegisterForm::RegisterForm(QWidget *parent)
     : QWidget(parent)
@@ -129,6 +177,9 @@ RegisterForm::RegisterForm(QWidget *parent)
     shadow->setColor(QColor(0, 0, 0, 255));  // Чёрный цвет с полной непрозрачностью
 
     ui->groupBox->setGraphicsEffect(shadow);
+
+    connect(ui->togglePasswordButton, &QPushButton::clicked, this, &RegisterForm::togglePasswordVisibility);
+    connect(ui->togglePasswordButton2, &QPushButton::clicked, this, &RegisterForm::togglePasswordVisibility2);
 }
 
 RegisterForm::~RegisterForm()
@@ -136,14 +187,4 @@ RegisterForm::~RegisterForm()
     delete ui;
 }
 
-void RegisterForm::onReturnButtonClicked()
-{
-    // Создаём объект окна регистрации
-    LoginForm* loginForm = new LoginForm();
 
-    // Показываем форму регистрации
-    loginForm->show();
-
-    // Закрываем форму авторизации
-    this->close();
-}
