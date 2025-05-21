@@ -53,17 +53,23 @@ void LoginForm::onLoginButtonClicked()
 
         // Сравниваем хэшированные пароли
         if (storedPassword == hashedPassword) {
-            QMessageBox::information(this, "Успех", "Вход выполнен успешно!");
+            int userId = -1;
 
-            // Открываем главное окно
-            MainWindow* mainWindow = new MainWindow();
-            mainWindow->show();
-            this->close();
-        } else {
-            QMessageBox::warning(this, "Ошибка", "Неверный пароль.");
+            QSqlQuery idQuery;
+            idQuery.prepare("SELECT id_users FROM Users WHERE email = :email");
+            idQuery.bindValue(":email", email);
+            if (idQuery.exec() && idQuery.next()) {
+                userId = idQuery.value(0).toInt();
+            }
+
+            if (userId != -1) {
+                MainWindow* mainWindow = new MainWindow(userId);
+                mainWindow->show();
+                this->close();
+            } else {
+                QMessageBox::critical(this, "Ошибка", "Не удалось получить ID пользователя.");
+            }
         }
-    } else {
-        QMessageBox::warning(this, "Ошибка", "Пользователь с таким email не найден.");
     }
 }
 

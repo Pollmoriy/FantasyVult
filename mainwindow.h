@@ -16,13 +16,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+   explicit MainWindow(int userId, QWidget *parent = nullptr);
     ~MainWindow();
+
 
 private:
     Ui::MainWindow *ui;
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
+    int userId;
 
 
 private slots:
@@ -30,6 +32,5 @@ private slots:
     void goToCatalog();
     void goToFavorite();
     void goToTests();
-
 };
 #endif // MAINWINDOW_H

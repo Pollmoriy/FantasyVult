@@ -94,13 +94,21 @@ void RegisterForm::on_registerButton_clicked() {
 
     if (query.exec()) {
         QMessageBox::information(this, "Успех", "Регистрация прошла успешно!");
-        MainWindow *mainWindow = new MainWindow();
-        mainWindow->show();
 
-        delete this;
-    } else {
-        QMessageBox::critical(this, "Ошибка", "Не удалось зарегистрировать: " + query.lastError().text());
+        // Получаем id нового пользователя
+        QSqlQuery idQuery;
+        idQuery.prepare("SELECT id_users FROM Users WHERE email = :email");
+        idQuery.bindValue(":email", email);
+        if (idQuery.exec() && idQuery.next()) {
+            int userId = idQuery.value(0).toInt();
+            MainWindow *mainWindow = new MainWindow(userId);
+            mainWindow->show();
+            delete this;
+        } else {
+            QMessageBox::critical(this, "Ошибка", "Ошибка получения ID пользователя.");
+        }
     }
+
 }
 
 

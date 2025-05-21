@@ -16,7 +16,7 @@ class FavoriteForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit FavoriteForm(QWidget *parent = nullptr);
+    explicit FavoriteForm(int userId, QWidget *parent = nullptr); // добавлен userId
     ~FavoriteForm();
 
     void setLikedUniverses(const QSet<QString>& likedSet);
@@ -27,6 +27,7 @@ private:
     QSet<QString> likedUniverses;
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
+     int userId;
 
 private slots:
     void goToMain();

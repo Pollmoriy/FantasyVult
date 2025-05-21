@@ -15,13 +15,14 @@ class CatalogForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit CatalogForm(QWidget *parent = nullptr);
+    explicit CatalogForm(int userId, QWidget *parent = nullptr); // добавлен userId
     ~CatalogForm();
 
     void clearCards();
     void loadUniverses(const QString& filter);
     void showNoResultsDialog(const QString& searchText);
     void loadUniversesByTags(const QStringList& selectedTags);
+    void loadLikedUniverses();
      QSet<QString> likedUniverses;  // множество уникальных имён вселенных, которые лайкнули
 
 private slots:
@@ -48,6 +49,8 @@ private:
 
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
+
+     int userId;
 };
 
 #endif // CATALOGFORM_H

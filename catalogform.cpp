@@ -45,8 +45,8 @@ void CatalogForm::setActiveButton(QPushButton* newActive)
 void CatalogForm::goToMain()
 {
     setActiveButton(ui->btnMain); // Пример
-    MainWindow* mainWindow = new MainWindow();
-    mainWindow->show();
+    MainWindow* mw = new MainWindow(this->userId);
+    mw->show();
     this->close();
 }
 
@@ -55,7 +55,7 @@ void CatalogForm::goToMain()
 void CatalogForm::goToCatalog()
 {
     setActiveButton(ui->btnCatalog);
-    CatalogForm* catalogform = new CatalogForm();
+    CatalogForm* catalogform = new CatalogForm(this->userId);
     catalogform->show();
     this->close();
 }
@@ -65,8 +65,8 @@ void CatalogForm::goToCatalog()
 void CatalogForm::goToFavorite()
 {
     setActiveButton(ui->btnFavorite);
-    FavoriteForm* favoriteform = new FavoriteForm();
-    favoriteform->show();
+    FavoriteForm* fav = new FavoriteForm(this->userId);
+    fav->show();
     this->close();
 }
 
@@ -118,23 +118,63 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     likeButton->setGeometry(475, 20, 71, 67);
     likeButton->setCheckable(true);
 
-    // Если вселенная уже лайкнута, поставим кнопку в checked
-    if (likedUniverses.contains(name)) {
-        likeButton->setChecked(true);
-        likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
+    // Проверка из базы: лайкнута ли эта вселенная текущим пользователем
+    QSqlQuery checkQuery;
+    checkQuery.prepare(
+        "SELECT COUNT(*) FROM Likes "
+        "JOIN Universe ON Likes.id_universe = Universe.id_universe "
+        "WHERE Likes.id_user = :id AND Universe.name = :name"
+        );
+    checkQuery.bindValue(":id", userId);
+    checkQuery.bindValue(":name", name);
+    if (checkQuery.exec() && checkQuery.next()) {
+        if (checkQuery.value(0).toInt() > 0) {
+            likeButton->setChecked(true);
+            likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
+            likedUniverses.insert(name);
+        } else {
+            likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
+        }
+    } else {
+        likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
+        qDebug() << "Ошибка проверки лайка:" << checkQuery.lastError().text();
     }
-
+    // Обработка клика лайка
     connect(likeButton, &QPushButton::clicked, [this, likeButton, name]() {
+        QSqlQuery query;
+
+        QSqlQuery idQuery;
+        idQuery.prepare("SELECT id_universe FROM Universe WHERE name = :name");
+        idQuery.bindValue(":name", name);
+        if (!idQuery.exec() || !idQuery.next()) {
+            qDebug() << "Не удалось получить id вселенной по имени:" << name;
+            return;
+        }
+        int universeId = idQuery.value(0).toInt();
+
         if (likeButton->isChecked()) {
             likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
             likedUniverses.insert(name);
-            qDebug() << "Лайк поставлен на:" << name;
+
+            query.prepare("INSERT INTO Likes (id_user, id_universe) VALUES (:userId, :universeId)");
+            query.bindValue(":userId", userId);
+            query.bindValue(":universeId", universeId);
+            if (!query.exec()) {
+                qDebug() << "Ошибка при добавлении лайка:" << query.lastError().text();
+            }
         } else {
             likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
             likedUniverses.remove(name);
-            qDebug() << "Лайк снят с:" << name;
+
+            query.prepare("DELETE FROM Likes WHERE id_user = :userId AND id_universe = :universeId");
+            query.bindValue(":userId", userId);
+            query.bindValue(":universeId", universeId);
+            if (!query.exec()) {
+                qDebug() << "Ошибка при удалении лайка:" << query.lastError().text();
+            }
         }
     });
+
 
     // Нижняя панель с названием
     QFrame *infoFrame = new QFrame(universeCard);
@@ -158,6 +198,7 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
 
     return cardWidget;
 }
+
 
 // ==================== Очистка всех карточек с экрана ====================
 void CatalogForm::clearCards()
@@ -190,9 +231,30 @@ void CatalogForm::clearCards()
     }
 }
 
+
+// ==================== Загрузка лайкнутых карточек====================
+void CatalogForm::loadLikedUniverses()
+{
+    likedUniverses.clear(); // Очистить старые значения
+    QSqlQuery query;
+    query.prepare("SELECT universe_name FROM Likes WHERE id_users = :id_universe");
+    query.bindValue(":id_universe", userId);
+    if (query.exec()) {
+        while (query.next()) {
+            likedUniverses.insert(query.value(0).toString());
+        }
+    } else {
+        qDebug() << "Ошибка при загрузке лайков:" << query.lastError().text();
+    }
+
+}
+
+
+
 // ==================== Загрузка и отображение карточек по фильтру ====================
 void CatalogForm::loadUniverses(const QString& filter)
 {
+    loadLikedUniverses();
     clearCards();
 
     QSqlDatabase db = QSqlDatabase::database();
@@ -256,6 +318,7 @@ void CatalogForm::loadUniverses(const QString& filter)
     // (сохраняем для обработки во внешнем методе)
     this->foundCardsCount = cardCount;
 }
+
 
 // ==================== Обработчик кнопки поиска ====================
 void CatalogForm::onSearchButtonClicked()
@@ -483,6 +546,7 @@ void CatalogForm::applyTagSelection()
 // ==================== // Фильтрация по тегам ====================
 void CatalogForm::loadUniversesByTags(const QStringList& tagsList)
 {
+    loadLikedUniverses();
     clearCards();
 
     if (tagsList.isEmpty()) {
@@ -551,10 +615,10 @@ void CatalogForm::loadUniversesByTags(const QStringList& tagsList)
 
 
 
-// ==================== Конструктор ====================
-CatalogForm::CatalogForm(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::CatalogForm)
+CatalogForm::CatalogForm(int userId, QWidget *parent)
+    : QWidget(parent),  // если наследуетесь от QWidget
+    ui(new Ui::CatalogForm),
+    userId(userId)
 {
     ui->setupUi(this);
 

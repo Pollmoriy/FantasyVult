@@ -8,6 +8,9 @@
 #include "buttonstyles.h"
 
 
+
+
+
 // ==================== // Активная кнопка навигации ====================
 void MainWindow::setActiveButton(QPushButton* newActive)
 {
@@ -29,9 +32,10 @@ void MainWindow::setActiveButton(QPushButton* newActive)
 void MainWindow::goToMain()
 {
     setActiveButton(ui->btnMain); // Пример
-    MainWindow* mainWindow = new MainWindow();
-    mainWindow->show();
+    MainWindow* mw = new MainWindow(this->userId);
+    mw->show();
     this->close();
+
 }
 
 
@@ -39,7 +43,7 @@ void MainWindow::goToMain()
 void MainWindow::goToCatalog()
 {
     setActiveButton(ui->btnCatalog);
-    CatalogForm* catalogform = new CatalogForm();
+    CatalogForm* catalogform = new CatalogForm(this->userId);
     catalogform->show();
     this->close();
 }
@@ -49,8 +53,8 @@ void MainWindow::goToCatalog()
 void MainWindow::goToFavorite()
 {
     setActiveButton(ui->btnFavorite);
-    FavoriteForm* favoriteform = new FavoriteForm();
-    favoriteform->show();
+    FavoriteForm* fav = new FavoriteForm(this->userId);
+    fav->show();
     this->close();
 }
 
@@ -66,11 +70,10 @@ void MainWindow::goToTests()
 }
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(int userId, QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), userId(userId)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);  // <--- Правильный вызов
 
     activeButton = ui->btnMain;
     activeButton->setStyleSheet(activeButtonStyle);
@@ -82,13 +85,10 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap pixmap1(":/images/main_background_img.jpg");
     ui->backgroundLabel->setPixmap(pixmap1.scaled(ui->backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
-
     connect(ui->btnMain, &QPushButton::clicked, this, &MainWindow::goToMain);
     connect(ui->btnCatalog, &QPushButton::clicked, this, &MainWindow::goToCatalog);
     connect(ui->btnFavorite, &QPushButton::clicked, this, &MainWindow::goToFavorite);
     connect(ui->btnTests, &QPushButton::clicked, this, &MainWindow::goToTests);
-
-
 }
 
 MainWindow::~MainWindow()
