@@ -6,14 +6,537 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <widget class="QLabel" name="backgroundLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>1080</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QFrame" name="menuframe">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>55</y>
+     <width>1920</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame {
+   background-color: rgba(0, 77, 98, 100);
+ /* Цвет с прозрачностью */
+}
+
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Shadow::Raised</enum>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>2</x>
+      <y>0</y>
+      <width>1926</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>110</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>474</number>
+     </property>
+     <property name="rightMargin">
+      <number>474</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnMain">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+QPushButton:hover {
+    color: #002935; /* При наведении */
+}</string>
+       </property>
+       <property name="text">
+        <string>Главная</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCatalog">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+QPushButton:hover {
+    color: #002935; /* При наведении */
+}</string>
+       </property>
+       <property name="text">
+        <string>Каталог</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnFavorite">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    font-family: url(:/fonts/Roboto_Condensed-Regular.ttf);
+    font-size: 45px;
+    color: white;
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+QPushButton:hover {
+    color: #002935; /* При наведении */
+}</string>
+       </property>
+       <property name="text">
+        <string>Любимое</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnTests">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    font-family: Roboto Condensed, sans-serif;
+    font-size: 45px;
+    color: #002935;
+    background-color: transparent;
+    border: none;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Тесты</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>252</y>
+     <width>1921</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1941</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>27</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>303</number>
+     </property>
+     <property name="rightMargin">
+      <number>306</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="searchLineEdit">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 30px;
+    font-family: 'Raleway';
+    color: black;
+    background-color: white;
+}
+
+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="searchButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: white;
+    border-radius: 20px;
+    width: 86px;
+    height: 81px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #E6E6E6;
+}
+QPushButton:pressed {
+    background-color: #CCCCCC;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/symbols/search.svg</normaloff>:/symbols/search.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>71</width>
+         <height>64</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>400</y>
+     <width>1920</width>
+     <height>681</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QScrollArea {
+    background-color: transparent;
+}
+
+QWidget#scrollAreaWidgetContents {
+    background-color: transparent;
+}</string>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1904</width>
+      <height>2740</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>2740</height>
+     </size>
+    </property>
+    <widget class="QWidget" name="cardConteiner" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1920</width>
+       <height>2740</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>2740</height>
+      </size>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1911</width>
+        <height>2741</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>75</number>
+       </property>
+       <property name="leftMargin">
+        <number>308</number>
+       </property>
+       <property name="rightMargin">
+        <number>311</number>
+       </property>
+       <property name="bottomMargin">
+        <number>84</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="card1">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>-1</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_1"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card2">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_10">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_2"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card3">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_11">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_3"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card4">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_12">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_4"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card5">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_13">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_5"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card6">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_14">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_6"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card7">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_15">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_7"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card8">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_16">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_8"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card9">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_17">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_9"/>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card10">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_18">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1291</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_10"/>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

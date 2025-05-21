@@ -68,8 +68,17 @@ void LoginForm::onLoginButtonClicked()
                 this->close();
             } else {
                 QMessageBox::critical(this, "Ошибка", "Не удалось получить ID пользователя.");
+                ui->passwordLineEdit->clear();
             }
+        } else {
+            QMessageBox::warning(this, "Ошибка", "Неверный пароль.");
+            ui->passwordLineEdit->clear();
         }
+    } else {
+        // Пользователь с таким email не найден
+        QMessageBox::warning(this, "Ошибка", "Пользователь с таким email не найден.");
+        ui->emailLineEdit->clear();
+        ui->passwordLineEdit->clear();
     }
 }
 

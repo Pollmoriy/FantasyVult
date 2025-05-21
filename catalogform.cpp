@@ -76,7 +76,7 @@ void CatalogForm::goToFavorite()
 void CatalogForm::goToTests()
 {
     setActiveButton(ui->btnTests);
-    TestsForm* testsform = new TestsForm();
+    TestsForm* testsform = new TestsForm(this->userId);
     testsform->show();
     this->close();
 }

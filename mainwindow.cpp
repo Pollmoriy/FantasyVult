@@ -64,7 +64,7 @@ void MainWindow::goToFavorite()
 void MainWindow::goToTests()
 {
     setActiveButton(ui->btnTests);
-    TestsForm* testsform = new TestsForm();
+    TestsForm* testsform = new TestsForm(this->userId);
     testsform->show();
     this->close();
 }
