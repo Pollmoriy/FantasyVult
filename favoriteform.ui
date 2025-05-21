@@ -292,61 +292,6 @@ QWidget#scrollAreaWidgetContents {
       </property>
       <layout class="QVBoxLayout" name="verticalLayout"/>
      </widget>
-     <widget class="QFrame" name="rowContainer_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>518</y>
-        <width>1920</width>
-        <height>518</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QWidget {
-    background-color: transparent;
-}
-</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
-      </property>
-      <widget class="QWidget" name="horizontalLayoutWidget_5">
-       <property name="geometry">
-        <rect>
-         <x>-320</x>
-         <y>-20</y>
-         <width>1921</width>
-         <height>521</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="spacing">
-         <number>209</number>
-        </property>
-        <property name="leftMargin">
-         <number>290</number>
-        </property>
-        <property name="topMargin">
-         <number>59</number>
-        </property>
-        <property name="rightMargin">
-         <number>290</number>
-        </property>
-        <property name="bottomMargin">
-         <number>90</number>
-        </property>
-       </layout>
-      </widget>
-     </widget>
      <widget class="QFrame" name="rowContainer_3">
       <property name="geometry">
        <rect>
@@ -604,6 +549,61 @@ QWidget#scrollAreaWidgetContents {
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <property name="spacing">
+         <number>209</number>
+        </property>
+        <property name="leftMargin">
+         <number>290</number>
+        </property>
+        <property name="topMargin">
+         <number>59</number>
+        </property>
+        <property name="rightMargin">
+         <number>290</number>
+        </property>
+        <property name="bottomMargin">
+         <number>90</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="rowContainer_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>518</y>
+        <width>1920</width>
+        <height>518</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget {
+    background-color: transparent;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1921</width>
+         <height>521</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
          <number>209</number>
         </property>

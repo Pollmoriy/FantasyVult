@@ -18,16 +18,17 @@ class FavoriteForm : public QWidget
 public:
     explicit FavoriteForm(int userId, QWidget *parent = nullptr); // добавлен userId
     ~FavoriteForm();
-
+    QSet<QString> likedUniverses;
     void setLikedUniverses(const QSet<QString>& likedSet);
     void loadFavoriteUniverses();
+    void clearCards();
 
 private:
     Ui::FavoriteForm *ui;
-    QSet<QString> likedUniverses;
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
      int userId;
+    QWidget* createUniverseCard(const QString &name, const QString &imagePath, QWidget *parent);
 
 private slots:
     void goToMain();
