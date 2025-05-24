@@ -41,6 +41,14 @@
         <file>images/wow.png</file>
         <file>images/cute_icon.png</file>
         <file>images/button_background.jpg</file>
+        <file>images/avatar_small.png</file>
+        <file>images/dragon_small.png</file>
+        <file>images/got_small.png</file>
+        <file>images/harrypotter_small.png</file>
+        <file>images/narnia_small.png</file>
+        <file>images/naruto_small.png</file>
+        <file>images/witcher_small.png</file>
+        <file>images/wow_small.png</file>
     </qresource>
     <qresource lang="&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/fonts&quot;>&#xa;        &lt;file>fonts/Raleway-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Roboto-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Cinzel-Regular.ttf&lt;/file>&#xa;    &lt;/qresource>&#xa;&lt;/RCC>&#xa;" prefix="/">
         <file>fonts/CinzelDecorative-Bold.ttf</file>
@@ -61,5 +69,7 @@
         <file>symbols/heart_pink.svg</file>
         <file>symbols/close_eye.svg</file>
         <file>symbols/open_eye.svg</file>
+        <file>symbols/green_check_box.svg</file>
+        <file>symbols/black_check_box.svg</file>
     </qresource>
 </RCC>

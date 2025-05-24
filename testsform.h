@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QFrame>
 
 namespace Ui {
 class TestsForm;
@@ -22,6 +23,9 @@ private:
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
     int userId;
+    void loadTestCards();
+    QFrame* createTestCard(const QString& name, const QString& imagePath, int index);
+
 
 private slots:
     void goToMain();

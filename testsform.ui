@@ -256,7 +256,8 @@ QPushButton:pressed {
 
 QWidget#scrollAreaWidgetContents {
     background-color: transparent;
-}</string>
+}
+</string>
    </property>
    <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
@@ -282,7 +283,7 @@ QWidget#scrollAreaWidgetContents {
       <height>2740</height>
      </size>
     </property>
-    <widget class="QWidget" name="cardConteiner" native="true">
+    <widget class="QWidget" name="cardContainer" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -296,6 +297,12 @@ QWidget#scrollAreaWidgetContents {
        <width>0</width>
        <height>2740</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QFrame {
+    background-color: transparent;
+}</string>
      </property>
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
@@ -321,6 +328,12 @@ QWidget#scrollAreaWidgetContents {
        </property>
        <item>
         <widget class="QFrame" name="card1">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>188</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
@@ -336,12 +349,25 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_1"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_1">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
        <item>
         <widget class="QFrame" name="card2">
+         <property name="styleSheet">
+          <string notr="true">QFrame {
+    background-color: transparent;
+}
+</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
@@ -357,7 +383,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_2"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_2">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -378,7 +411,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_3"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_3">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -399,7 +439,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_4"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_4">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -420,7 +467,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_5"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_5">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -441,7 +495,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_6"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_6">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -462,7 +523,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_7"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_7">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -483,7 +551,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_8"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_8">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -504,7 +579,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_9"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_9">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -525,7 +607,14 @@ QWidget#scrollAreaWidgetContents {
             <height>201</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="CardhorizontalLayout_10"/>
+          <layout class="QHBoxLayout" name="CardhorizontalLayout_10">
+           <property name="spacing">
+            <number>30</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>
