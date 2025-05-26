@@ -5,6 +5,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QFrame>
+#include <QVector>
+#include <QFrame>
 
 namespace Ui {
 class TestsForm;
@@ -25,6 +27,10 @@ private:
     int userId;
     void loadTestCards();
     QFrame* createTestCard(const QString& name, const QString& imagePath, int index);
+
+    void performSearch(const QString& searchText);
+    QVector<QFrame*> allCards;
+    void clearTestCards();
 
 
 private slots:

@@ -49,6 +49,8 @@
         <file>images/naruto_small.png</file>
         <file>images/witcher_small.png</file>
         <file>images/wow_small.png</file>
+        <file>images/rings_small.png</file>
+        <file>images/elden_small.png</file>
     </qresource>
     <qresource lang="&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/fonts&quot;>&#xa;        &lt;file>fonts/Raleway-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Roboto-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Cinzel-Regular.ttf&lt;/file>&#xa;    &lt;/qresource>&#xa;&lt;/RCC>&#xa;" prefix="/">
         <file>fonts/CinzelDecorative-Bold.ttf</file>
