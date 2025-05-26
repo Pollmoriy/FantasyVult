@@ -25,12 +25,14 @@ private:
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
     int userId;
-    void loadTestCards();
     QFrame* createTestCard(const QString& name, const QString& imagePath, int index);
 
-    void performSearch(const QString& searchText);
-    QVector<QFrame*> allCards;
+    void onSearchButtonClicked();
+
+    void loadTestCards(const QString& filter);
     void clearTestCards();
+    void showNoResultsDialog(const QString& searchText);
+
 
 
 private slots:
