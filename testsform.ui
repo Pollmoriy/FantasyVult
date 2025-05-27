@@ -157,96 +157,13 @@ QPushButton:hover {
     </layout>
    </widget>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>252</y>
-     <width>1921</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1941</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="spacing">
-      <number>27</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-     </property>
-     <property name="leftMargin">
-      <number>303</number>
-     </property>
-     <property name="rightMargin">
-      <number>306</number>
-     </property>
-     <item>
-      <widget class="QLineEdit" name="searchLineEdit">
-       <property name="styleSheet">
-        <string notr="true">QLineEdit {
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 30px;
-    font-family: 'Raleway';
-    color: black;
-    background-color: white;
-}
-
-</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="searchButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    background-color: white;
-    border-radius: 20px;
-    width: 86px;
-    height: 81px;
-    border: none;
-}
-QPushButton:hover {
-    background-color: #E6E6E6;
-}
-QPushButton:pressed {
-    background-color: #CCCCCC;
-}</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/symbols/search.svg</normaloff>:/symbols/search.svg</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>71</width>
-         <height>64</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>400</y>
+     <x>-10</x>
+     <y>270</y>
      <width>1920</width>
-     <height>681</height>
+     <height>811</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -332,8 +249,6 @@ QFrame {
    </widget>
   </widget>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

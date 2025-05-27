@@ -27,9 +27,7 @@ private:
     int userId;
     QFrame* createTestCard(const QString& name, const QString& imagePath, int index);
 
-    void onSearchButtonClicked();
-
-    void loadTestCards(const QString& filter);
+    void loadTestCards();
     void clearTestCards();
     void showNoResultsDialog(const QString& searchText);
 
