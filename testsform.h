@@ -25,7 +25,8 @@ private:
     QPushButton* activeButton = nullptr; // если еще не добавляла
     void setActiveButton(QPushButton* newActive);
     int userId;
-    QFrame* createTestCard(const QString& name, const QString& imagePath, int index);
+    QFrame* createTestCard(const QString& testName, const QString& imagePath, int index, int universeId);
+
 
     void loadTestCards();
     void clearTestCards();
@@ -38,6 +39,7 @@ private slots:
     void goToCatalog();
     void goToFavorite();
     void goToTests();
+    void goToTest(int universeId, const QString& testName, QPushButton* questStatusButton);
 
 };
 

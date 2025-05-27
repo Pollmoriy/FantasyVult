@@ -18,6 +18,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     registerform.cpp \
+    testform.cpp \
     testsform.cpp \
     utils.cpp
 
@@ -28,6 +29,7 @@ HEADERS += \
     loginform.h \
     mainwindow.h \
     registerform.h \
+    testform.h \
     testsform.h \
     utils.h
 
@@ -37,6 +39,7 @@ FORMS += \
     loginform.ui \
     mainwindow.ui \
     registerform.ui \
+    testform.ui \
     testsform.ui
 
 # Default rules for deployment.
