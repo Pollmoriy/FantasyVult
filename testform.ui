@@ -31,7 +31,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1921</width>
      <height>1101</height>
     </rect>
    </property>
@@ -58,7 +58,7 @@ QWidget#scrollAreaWidgetContents {
      <rect>
       <x>0</x>
       <y>-3001</y>
-      <width>1904</width>
+      <width>1905</width>
       <height>4100</height>
      </rect>
     </property>
@@ -77,55 +77,39 @@ QWidget#scrollAreaWidgetContents {
        <height>3611</height>
       </rect>
      </property>
-     <widget class="QWidget" name="verticalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1911</width>
-        <height>3611</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="questionsLayout">
-       <property name="spacing">
-        <number>98</number>
-       </property>
-       <property name="leftMargin">
-        <number>210</number>
-       </property>
-       <property name="rightMargin">
-        <number>210</number>
-       </property>
-      </layout>
-     </widget>
     </widget>
-    <widget class="QLabel" name="nameLabel">
+    <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>560</x>
-       <y>50</y>
-       <width>49</width>
-       <height>16</height>
+       <x>0</x>
+       <y>280</y>
+       <width>1931</width>
+       <height>3611</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
+     <layout class="QVBoxLayout" name="questionsLayout">
+      <property name="spacing">
+       <number>98</number>
+      </property>
+      <property name="leftMargin">
+       <number>210</number>
+      </property>
+      <property name="rightMargin">
+       <number>210</number>
+      </property>
+     </layout>
     </widget>
     <widget class="QPushButton" name="finishButton">
      <property name="geometry">
       <rect>
-       <x>1620</x>
-       <y>3940</y>
-       <width>241</width>
-       <height>91</height>
+       <x>1650</x>
+       <y>3950</y>
+       <width>191</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="text">
-      <string>Завершить тест</string>
+      <string>PushButton</string>
      </property>
     </widget>
    </widget>

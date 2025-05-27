@@ -29,6 +29,8 @@ private:
     QString testName;
 
     QFrame* createQuestionCard(const QString& questionText, const QStringList& answers);
+    void loadUniverseTitle();
+
 };
 
 #endif // TESTFORM_H
