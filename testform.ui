@@ -57,24 +57,24 @@ QWidget#scrollAreaWidgetContents {
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-22</y>
+      <y>-3001</y>
       <width>1904</width>
-      <height>4156</height>
+      <height>4100</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>0</width>
-      <height>4156</height>
+      <height>4100</height>
      </size>
     </property>
     <widget class="QWidget" name="widget" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>180</y>
+       <y>279</y>
        <width>1920</width>
-       <height>3328</height>
+       <height>3611</height>
       </rect>
      </property>
      <widget class="QWidget" name="verticalLayoutWidget">
@@ -83,10 +83,10 @@ QWidget#scrollAreaWidgetContents {
         <x>0</x>
         <y>0</y>
         <width>1911</width>
-        <height>3331</height>
+        <height>3611</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="questionsLayout">
        <property name="spacing">
         <number>98</number>
        </property>
@@ -96,110 +96,10 @@ QWidget#scrollAreaWidgetContents {
        <property name="rightMargin">
         <number>210</number>
        </property>
-       <item>
-        <widget class="QFrame" name="frame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame2">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame3">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame4">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame5">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame6">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame7">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame8">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame9">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frame10">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="nameLabel">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -213,6 +113,19 @@ QWidget#scrollAreaWidgetContents {
      </property>
      <property name="text">
       <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="finishButton">
+     <property name="geometry">
+      <rect>
+       <x>1620</x>
+       <y>3940</y>
+       <width>241</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Завершить тест</string>
      </property>
     </widget>
    </widget>

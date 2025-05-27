@@ -1,24 +1,35 @@
-#pragma once
+#ifndef TESTFORM_H
+#define TESTFORM_H
 
-#include "ui_testform.h"
 #include <QWidget>
-#include <QPushButton>
+#include <QString>
+#include <QButtonGroup>
+#include <QFrame>
+
+
+namespace Ui {
+class TestForm;
+}
 
 class TestForm : public QWidget
 {
     Q_OBJECT
 
 public:
-    ~TestForm() override;
-    explicit TestForm(int userId, int universeId, const QString& testName, QWidget* parent = nullptr);
+    explicit TestForm(int userId, int universeId, const QString& testName, QWidget *parent = nullptr);
+    ~TestForm();
+
+private slots:
+    void finishTest(); // слот для кнопки "Завершить тест"
 
 private:
     Ui::TestForm *ui;
     int userId;
     int universeId;
     QString testName;
-    QPushButton* questStatusButton;
 
-    void completeTest(); // вызывается после завершения
+    QFrame* createQuestionCard(const QString& questionText, const QStringList& answers);
 };
+
+#endif // TESTFORM_H
 
