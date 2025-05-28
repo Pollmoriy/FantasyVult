@@ -12,7 +12,7 @@ class ResultDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ResultDialog(int correctCount, int totalCount, QWidget *parent = nullptr);
+    explicit ResultDialog(int correctCount, int totalCount, QWidget *parent);
     ~ResultDialog();
 
 signals:
