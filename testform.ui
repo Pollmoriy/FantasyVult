@@ -126,9 +126,48 @@ QPushButton:hover {
       <string>Закончить прохождение</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="backButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>3930</y>
+       <width>181</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #01293A;
+    color: #FFFFFF;
+    border: 5px solid #000000;
+    border-radius: 40px;
+    font-family: 'Roboto';
+    font-size: 45px;
+}
+QPushButton:hover {
+    background-color: #001a26;
+}
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/symbols/Arrow.svg</normaloff>:/symbols/Arrow.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>80</width>
+       <height>80</height>
+      </size>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

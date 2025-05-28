@@ -94,8 +94,10 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
 
     QButtonGroup* group = new QButtonGroup(card);
     group->setExclusive(true);
-    questionGroups.append(group);
 
+    // Добавляем связь группы с вопросом
+    groupToQuestionId[group] = id_question;
+    questionGroups.append(group);
 
     for (int i = 0; i < answers.size(); ++i) {
         QWidget* optionWidget = new QWidget;
@@ -134,17 +136,14 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
         int col = i % 2;
         answersLayout->addWidget(optionWidget, row, col);
 
+        // Здесь id ответа — second параметр, доступен через group->id(button)
         group->addButton(radio, answers[i].id_answer);
-
-
     }
 
-    // Сохраняем выбранный id ответа при выборе
     connect(group, &QButtonGroup::idClicked, this, [=](int id_answer){
-        userAnswers[id_question] = id_answer;  // просто присваиваем int
+        userAnswers[id_question] = id_answer;
         qDebug() << "User selected answer for question" << id_question << ":" << id_answer;
     });
-
 
     cardLayout->addLayout(answersLayout);
     return card;
@@ -239,29 +238,120 @@ void TestForm::loadCorrectAnswers()
 }
 
 
+void TestForm::saveTestResult()
+{
+    int correctCount = 0;
+    int totalCount = userAnswers.size();
+
+    QSqlQuery query;
+    query.prepare("SELECT id_tests FROM Tests WHERE test_name = :name AND id_universe = :universeId");
+    query.bindValue(":name", testName);
+    query.bindValue(":universeId", universeId);
+
+    if (query.exec() && query.next()) {
+        testId = query.value(0).toInt();
+        qDebug() << "testId загружен:" << testId;
+    } else {
+        qDebug() << "Ошибка при получении testId:" << query.lastError().text();
+    }
+
+    // Подсчёт правильных ответов
+    for (auto it = userAnswers.begin(); it != userAnswers.end(); ++it) {
+        int questionId = it.key();
+        int selectedAnswerId = it.value();
+        if (correctAnswers.contains(questionId) && correctAnswers[questionId] == selectedAnswerId) {
+            correctCount++;
+        }
+    }
+
+    qDebug() << "Попытка сохранить результат: "
+             << "userId:" << userId << ", testId:" << testId
+             << ", correct:" << correctCount << ", total:" << totalCount;
+
+
+
+    // Проверка, что testId установлен
+    if (testId == -1) {
+        qDebug() << "testId не найден. Отмена сохранения.";
+        return;
+    }
+
+    QSqlQuery resultQuery;
+    resultQuery.prepare("INSERT INTO TestResults (id_users, id_tests, correct_answers, total_questions) "
+                        "VALUES (?, ?, ?, ?)");
+    resultQuery.addBindValue(userId);
+    resultQuery.addBindValue(testId);
+    resultQuery.addBindValue(correctCount);
+    resultQuery.addBindValue(totalCount);
+
+    qDebug() << "Пробую выполнить SQL-запрос на сохранение результата...";
+    if (!resultQuery.exec()) {
+        qDebug() << "Ошибка при сохранении результата:" << resultQuery.lastError().text();
+    } else {
+        qDebug() << "Результат успешно сохранён!";
+    }
+
+
+}
+
+
+
+void TestForm::lockAndColorAnswers()
+{
+    // Пройдёмся по всем группам вопросов
+    for (int i = 0; i < questionGroups.size(); ++i) {
+        QButtonGroup* group = questionGroups[i];
+        if (!group) continue;
+
+        // Блокируем всю группу (радиокнопки)
+        for (QAbstractButton* btn : group->buttons()) {
+            btn->setEnabled(false);
+        }
+
+        // Получаем id вопроса, связанный с этой группой
+        // Предполагаем, что порядок questionGroups совпадает с порядком вопросов в userAnswers
+        // Если у тебя есть явная связь, лучше её использовать
+        int questionId = userAnswers.keys().value(i, -1);
+        if (questionId == -1) continue;
+
+        int userSelectedAnswer = userAnswers.value(questionId, -1);
+        int correctAnswer = correctAnswers.value(questionId, -1);
+
+        // Подсвечиваем лейблы у выбранного ответа
+        for (QAbstractButton* btn : group->buttons()) {
+            if (group->id(btn) == userSelectedAnswer) {
+                // Находим QLabel рядом с этой радиокнопкой (родительский виджет -> layout -> второй виджет - QLabel)
+                QWidget* parentWidget = btn->parentWidget();
+                if (!parentWidget) continue;
+                QHBoxLayout* layout = qobject_cast<QHBoxLayout*>(parentWidget->layout());
+                if (!layout) continue;
+
+                // Второй виджет в layout — это QLabel с текстом ответа
+                QWidget* labelWidget = layout->itemAt(1)->widget();
+                QLabel* answerLabel = qobject_cast<QLabel*>(labelWidget);
+                if (!answerLabel) continue;
+
+                // Красим в зелёный, если ответ правильный, красный если нет
+                if (userSelectedAnswer == correctAnswer) {
+                    answerLabel->setStyleSheet("color: green; font-weight: bold;");
+                } else {
+                    answerLabel->setStyleSheet("color: red; font-weight: bold;");
+                }
+            }
+        }
+    }
+}
+
+
 void TestForm::finishTest()
 {
-
-    int totalQuestionsCount =10;
+    int totalQuestionsCount = 10;
     if (userAnswers.size() != totalQuestionsCount) {
         QMessageBox::warning(this, "Внимание", "Пожалуйста, ответьте на все вопросы перед завершением теста.");
         return;
     }
 
-    qDebug() << "Тест завершён!";
-
-
     loadCorrectAnswers();
-
-    qDebug() << "User answers:";
-    for (auto it = userAnswers.constBegin(); it != userAnswers.constEnd(); ++it) {
-        qDebug() << "Question" << it.key() << "selected answer" << it.value();
-    }
-
-    qDebug() << "Correct answers:";
-    for (auto it = correctAnswers.constBegin(); it != correctAnswers.constEnd(); ++it) {
-        qDebug() << "Question" << it.key() << "correct answer" << it.value();
-    }
 
     int correctCount = 0;
     for (auto it = userAnswers.constBegin(); it != userAnswers.constEnd(); ++it) {
@@ -273,13 +363,16 @@ void TestForm::finishTest()
     }
 
     ResultDialog* dialog = new ResultDialog(correctCount, userAnswers.size(), this);
-
     dialog->setWindowTitle("Результат прохождения теста");
     dialog->show();
 
+    connect(dialog, &ResultDialog::saveRequested, this, &TestForm::saveTestResult);
     connect(dialog, &ResultDialog::retryRequested, this, &TestForm::restartTest);
 
     qDebug() << "Правильных ответов:" << correctCount << "/" << userAnswers.size();
+
+    // Блокируем радиокнопки и подсвечиваем ответы
+    lockAndColorAnswers();
 }
 
 
@@ -288,24 +381,34 @@ void TestForm::restartTest()
 {
     userAnswers.clear();
 
-    // Пройтись по всем дочерним виджетам с ответами и очистить выделение радиокнопок
     for (QButtonGroup* group : questionGroups) {
         group->setExclusive(false);
+
         for (QAbstractButton* btn : group->buttons()) {
             btn->setChecked(false);
+            btn->setEnabled(true); // разблокируем радиокнопки
+
+            // Сбрасываем стиль соседнего QLabel с текстом ответа
+            QWidget* parentWidget = btn->parentWidget();
+            if (!parentWidget) continue;
+            QHBoxLayout* layout = qobject_cast<QHBoxLayout*>(parentWidget->layout());
+            if (!layout) continue;
+
+            QWidget* labelWidget = layout->itemAt(1)->widget();
+            QLabel* answerLabel = qobject_cast<QLabel*>(labelWidget);
+            if (!answerLabel) continue;
+
+            answerLabel->setStyleSheet("color: black; font-weight: normal;");
         }
+
         group->setExclusive(true);
     }
-    userAnswers.clear();
-    ui->scrollArea->verticalScrollBar()->setValue(0);
 
-
-    // Вернуться к началу теста (если есть прокрутка)
     if (ui->scrollArea) {
         ui->scrollArea->verticalScrollBar()->setValue(0);
     }
 
-    qDebug() << "Тест перезапущен, ответы очищены";
+    qDebug() << "Тест перезапущен, ответы очищены и стили сброшены";
 }
 
 
