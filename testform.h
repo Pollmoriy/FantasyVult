@@ -6,6 +6,20 @@
 #include <QButtonGroup>
 #include <QFrame>
 
+struct AnswerItem {
+    int idAnswer;
+    QString answerText;
+    bool isCorrect;
+};
+
+struct QuestionItem {
+    int idQuestion;
+    QString questionText;
+    QVector<AnswerItem> answers;
+};
+
+QVector<QuestionItem> loadQuestionsWithAnswers(int id_tests);
+
 
 namespace Ui {
 class TestForm;
@@ -19,6 +33,7 @@ public:
     explicit TestForm(int userId, int universeId, const QString& testName, QWidget *parent = nullptr);
     ~TestForm();
 
+
 private slots:
     void finishTest(); // слот для кнопки "Завершить тест"
 
@@ -30,6 +45,8 @@ private:
 
     QFrame* createQuestionCard(const QString& questionText, const QStringList& answers);
     void loadUniverseTitle();
+    QStringList getAnswersByQuestionId(int id_question);
+
 
 };
 
