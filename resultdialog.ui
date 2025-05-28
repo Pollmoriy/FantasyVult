@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ResultDialog</class>
+ <widget class="QDialog" name="ResultDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>802</width>
+    <height>490</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+background: qlineargradient(x1:0, y1:1, x2:1, y2:0, stop:0 #012A38, stop:1 #C0FCFF);
+border: 6px solid black;
+border-radius: 20px;
+}
+</string>
+  </property>
+  <widget class="QLabel" name="resultLabel">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>30</y>
+     <width>581</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel#resultLabel {
+    font-family: &quot;Inter&quot;;
+    font-weight: bold;
+    font-size: 48px;           /* можно изменить размер по вкусу */
+    color: black;              /* или белый, если фон тёмный */
+    qproperty-alignment: 'AlignCenter';
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Ваш результат: n/10</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveButton">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>150</y>
+     <width>554</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #01293A;
+    color: #FFFFFF;
+    border: 5px solid #000000;
+    border-radius: 40px;
+    font-family: 'Roboto';
+    font-size: 45px;
+}
+QPushButton:hover {
+    background-color: #001a26;
+}</string>
+   </property>
+   <property name="text">
+    <string>Сохранить результат</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="retryButton">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>320</y>
+     <width>411</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #01293A;
+    color: #FFFFFF;
+    border: 5px solid #000000;
+    border-radius: 40px;
+    font-family: 'Roboto';
+    font-size: 45px;
+}
+QPushButton:hover {
+    background-color: #001a26;
+}</string>
+   </property>
+   <property name="text">
+    <string>Пройти заново</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -18,6 +18,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     registerform.cpp \
+    resultdialog.cpp \
     testform.cpp \
     testsform.cpp \
     utils.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     loginform.h \
     mainwindow.h \
     registerform.h \
+    resultdialog.h \
     testform.h \
     testsform.h \
     utils.h
@@ -39,6 +41,7 @@ FORMS += \
     loginform.ui \
     mainwindow.ui \
     registerform.ui \
+    resultdialog.ui \
     testform.ui \
     testsform.ui
 
