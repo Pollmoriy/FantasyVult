@@ -22,9 +22,9 @@ signals:
 private slots:
     void on_saveButton_clicked();
     void on_retryButton_clicked();
-
 private:
     Ui::ResultDialog *ui;
 };
+
 
 #endif // RESULTDIALOG_H

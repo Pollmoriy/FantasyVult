@@ -29,6 +29,8 @@ class TestForm : public QWidget
 public:
     explicit TestForm(int userId, int universeId, const QString& testName, QWidget *parent = nullptr);
     ~TestForm();
+public slots:
+    void restartTest();
 
 
 private slots:
@@ -46,6 +48,7 @@ private:
     void loadCorrectAnswers();
     QMap<int, int> userAnswers;    // id вопроса -> выбранный id ответа
     QMap<int, int> correctAnswers; // id вопроса -> id правильного ответа
+    QList<QButtonGroup*> questionGroups;
 
 };
 
