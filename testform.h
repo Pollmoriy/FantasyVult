@@ -6,19 +6,16 @@
 #include <QButtonGroup>
 #include <QFrame>
 
-struct AnswerItem {
-    int idAnswer;
-    QString answerText;
-    bool isCorrect;
+struct AnswerOption {
+    int id_answer;
+    QString text;
+    bool is_correct; // можно пока не использовать
 };
 
-struct QuestionItem {
-    int idQuestion;
-    QString questionText;
-    QVector<AnswerItem> answers;
+struct UserAnswer {
+    int id_question;
+    int selected_id_answer = -1; // -1 — не выбрано
 };
-
-QVector<QuestionItem> loadQuestionsWithAnswers(int id_tests);
 
 
 namespace Ui {
@@ -43,9 +40,10 @@ private:
     int universeId;
     QString testName;
 
-    QFrame* createQuestionCard(const QString& questionText, const QStringList& answers);
+    QFrame* createQuestionCard(int id_question, const QString& questionText, const QList<AnswerOption>& answers);
     void loadUniverseTitle();
     QStringList getAnswersByQuestionId(int id_question);
+    QMap<int, UserAnswer> userAnswers;
 
 
 };
