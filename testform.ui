@@ -102,14 +102,28 @@ QWidget#scrollAreaWidgetContents {
     <widget class="QPushButton" name="finishButton">
      <property name="geometry">
       <rect>
-       <x>1650</x>
-       <y>3950</y>
-       <width>191</width>
-       <height>81</height>
+       <x>1170</x>
+       <y>3930</y>
+       <width>680</width>
+       <height>121</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #01293A;
+    color: #FFFFFF;
+    border: 5px solid #000000;
+    border-radius: 40px;
+    font-family: 'Roboto';
+    font-size: 45px;
+}
+QPushButton:hover {
+    background-color: #001a26;
+}
+</string>
+     </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Закончить прохождение</string>
      </property>
     </widget>
    </widget>
