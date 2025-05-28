@@ -43,8 +43,9 @@ private:
     QFrame* createQuestionCard(int id_question, const QString& questionText, const QList<AnswerOption>& answers);
     void loadUniverseTitle();
     QStringList getAnswersByQuestionId(int id_question);
-    QMap<int, UserAnswer> userAnswers;
-
+    void loadCorrectAnswers();
+    QMap<int, int> userAnswers;    // id вопроса -> выбранный id ответа
+    QMap<int, int> correctAnswers; // id вопроса -> id правильного ответа
 
 };
 
