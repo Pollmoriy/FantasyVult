@@ -75,13 +75,30 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
 
     QPushButton* questStatusButton = new QPushButton();
     questStatusButton->setFixedSize(116, 116);
-    questStatusButton->setStyleSheet(R"(
+
+    // ❗ Проверка по таблице UserAnswers
+    bool testPassed = false;
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT COUNT(*) FROM UserAnswers WHERE id_user = :uid AND id_test = :tid");
+    checkQuery.bindValue(":uid", userId);
+    checkQuery.bindValue(":tid", universeId); // предполагается, что `id_test = id_universe`
+    if (checkQuery.exec() && checkQuery.next()) {
+        testPassed = checkQuery.value(0).toInt() > 0;
+    } else {
+        qDebug() << "[ERROR] Ошибка запроса к UserAnswers:" << checkQuery.lastError().text();
+    }
+
+    QString iconPath = testPassed
+                           ? ":/symbols/green_check_box.svg"
+                           : ":/symbols/black_check_box.svg";
+
+    questStatusButton->setStyleSheet(QString(R"(
         QPushButton {
             background-color: transparent;
             border: none;
-            qproperty-icon: url(:/symbols/black_check_box.svg);
+            qproperty-icon: url(%1);
             qproperty-iconSize: 116px 116px;
-        })");
+        })").arg(iconPath));
 
     // Подключаем кнопку "Пройти"
     connect(testButton, &QPushButton::clicked, this, [=]() {
@@ -96,6 +113,7 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
     card->setVisible(true);
     return card;
 }
+
 
 
 // ==================== // Загрузка карточек ====================
@@ -206,7 +224,13 @@ void TestsForm::goToTest(int universeId, const QString& testName, QPushButton* q
     TestForm* testForm = new TestForm(userId, universeId, testName);
     testForm->show();
     this->close();
+
+    connect(testForm, &TestForm::returnToTests, this, [=]() {
+        TestsForm* newTestsForm = new TestsForm(userId);  // пересоздаём страницу
+        newTestsForm->show();
+    });
 }
+
 
 
 

@@ -19,6 +19,7 @@ ResultDialog::ResultDialog(int correctCount, int totalCount, QWidget *parent) :
     });
 
 
+
     // Задаём текст результата
     QString resultText = QString("Ваш результат: %1/%2").arg(correctCount).arg(totalCount);
     ui->resultLabel->setText(resultText);

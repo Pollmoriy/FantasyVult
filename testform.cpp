@@ -24,6 +24,11 @@ TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget 
 {
     ui->setupUi(this);
 
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "БД не открыта:" << db.lastError().text();
+    }
+
     QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Roboto_Condensed-Regular.ttf");
 
@@ -33,10 +38,40 @@ TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget 
 
     loadUniverseTitle();
 
+    // Получение id_tests
+    QSqlQuery testIdQuery;
+    testIdQuery.prepare("SELECT id_tests FROM Tests WHERE test_name = :name AND id_universe = :universeId");
+    testIdQuery.bindValue(":name", testName);
+    testIdQuery.bindValue(":universeId", universeId);
 
+    if (testIdQuery.exec() && testIdQuery.next()) {
+        testId = testIdQuery.value(0).toInt();
+        qDebug() << "testId найден в конструкторе:" << testId;
+    } else {
+        qDebug() << "Ошибка загрузки testId в конструкторе:" << testIdQuery.lastError().text();
+    }
+
+    // Загрузка сохранённых ответов пользователя
+    QSqlQuery userAnsQuery;
+    userAnsQuery.prepare("SELECT id_question, id_answer FROM UserAnswers WHERE id_user = :userId AND id_test = :testId");
+    userAnsQuery.bindValue(":userId", userId);
+    userAnsQuery.bindValue(":testId", testId);
+
+    if (userAnsQuery.exec()) {
+        while (userAnsQuery.next()) {
+            int questionId = userAnsQuery.value(0).toInt();
+            int answerId = userAnsQuery.value(1).toInt();
+            userAnswers[questionId] = answerId;
+        }
+    } else {
+        qDebug() << "Ошибка при загрузке ответов пользователя:" << userAnsQuery.lastError().text();
+    }
+
+    // Загрузка вопросов и создание карточек
     QSqlQuery questionQuery;
     questionQuery.prepare("SELECT id_question, question_text FROM Question WHERE id_tests = :id_tests LIMIT 10");
-    questionQuery.bindValue(":id_tests", 1); // или переменная, если у тебя есть
+    questionQuery.bindValue(":id_tests", testId);
+
     if (questionQuery.exec()) {
         while (questionQuery.next()) {
             int id_question = questionQuery.value(0).toInt();
@@ -58,17 +93,27 @@ TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget 
                 }
             }
 
-            // Создаём карточку
+            // Создаём карточку вопроса
             QFrame* card = createQuestionCard(id_question, questionText, answers);
             ui->questionsLayout->addWidget(card);
         }
     }
 
+    // Если есть сохранённые ответы — раскрасить и заблокировать интерфейс
+    if (!userAnswers.isEmpty()) {
+        lockAndColorAnswers();              // Раскрашивает и блокирует радиокнопки
+    }
 
-
-    // Кнопка завершения теста
+    // Подключение кнопки завершения теста
     connect(ui->finishButton, &QPushButton::clicked, this, &TestForm::finishTest);
+    connect(ui->backButton, &QPushButton::clicked, this, [=]() {
+        emit returnToTests(); // вызываем сигнал
+        this->close();
+    });
+
+
 }
+
 
 QFrame* TestForm::createQuestionCard(int id_question, const QString& questionText, const QList<AnswerOption>& answers)
 {
@@ -95,9 +140,16 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
     QButtonGroup* group = new QButtonGroup(card);
     group->setExclusive(true);
 
-    // Добавляем связь группы с вопросом
     groupToQuestionId[group] = id_question;
     questionGroups.append(group);
+
+    // Сохраняем правильный ответ
+    for (const AnswerOption& opt : answers) {
+        if (opt.is_correct) {
+            correctAnswers[id_question] = opt.id_answer;
+            break; // предполагается только один правильный ответ
+        }
+    }
 
     for (int i = 0; i < answers.size(); ++i) {
         QWidget* optionWidget = new QWidget;
@@ -136,7 +188,6 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
         int col = i % 2;
         answersLayout->addWidget(optionWidget, row, col);
 
-        // Здесь id ответа — second параметр, доступен через group->id(button)
         group->addButton(radio, answers[i].id_answer);
     }
 
@@ -148,6 +199,7 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
     cardLayout->addLayout(answersLayout);
     return card;
 }
+
 
 
 void TestForm::loadUniverseTitle()
@@ -240,6 +292,8 @@ void TestForm::loadCorrectAnswers()
 
 void TestForm::saveTestResult()
 {
+    QSqlDatabase::database().transaction();  // начало транзакции
+
     int correctCount = 0;
     int totalCount = userAnswers.size();
 
@@ -255,7 +309,6 @@ void TestForm::saveTestResult()
         qDebug() << "Ошибка при получении testId:" << query.lastError().text();
     }
 
-    // Подсчёт правильных ответов
     for (auto it = userAnswers.begin(); it != userAnswers.end(); ++it) {
         int questionId = it.key();
         int selectedAnswerId = it.value();
@@ -264,13 +317,6 @@ void TestForm::saveTestResult()
         }
     }
 
-    qDebug() << "Попытка сохранить результат: "
-             << "userId:" << userId << ", testId:" << testId
-             << ", correct:" << correctCount << ", total:" << totalCount;
-
-
-
-    // Проверка, что testId установлен
     if (testId == -1) {
         qDebug() << "testId не найден. Отмена сохранения.";
         return;
@@ -284,15 +330,21 @@ void TestForm::saveTestResult()
     resultQuery.addBindValue(correctCount);
     resultQuery.addBindValue(totalCount);
 
-    qDebug() << "Пробую выполнить SQL-запрос на сохранение результата...";
     if (!resultQuery.exec()) {
         qDebug() << "Ошибка при сохранении результата:" << resultQuery.lastError().text();
+        QSqlDatabase::database().rollback();
     } else {
         qDebug() << "Результат успешно сохранён!";
+        QSqlDatabase::database().commit();
     }
 
+    //  Сохраняем выбранные пользователем ответы
+    saveUserAnswers();
 
+    //  Блокируем и раскрашиваем интерфейс
+    lockAndColorAnswers();
 }
+
 
 
 
@@ -342,6 +394,31 @@ void TestForm::lockAndColorAnswers()
     }
 }
 
+void TestForm::saveUserAnswers()
+{
+    // Удалим старые записи (если пользователь перепроходил тест)
+    QSqlQuery deleteQuery;
+    deleteQuery.prepare("DELETE FROM UserAnswers WHERE id_user = :userId AND id_test = :testId");
+    deleteQuery.bindValue(":userId", userId);
+    deleteQuery.bindValue(":testId", testId);
+    deleteQuery.exec();
+
+    QSqlQuery insertQuery;
+    for (auto it = userAnswers.begin(); it != userAnswers.end(); ++it) {
+        int questionId = it.key();
+        int selectedAnswerId = it.value();
+
+        insertQuery.prepare("INSERT INTO UserAnswers (id_user, id_test, id_question, id_answer) "
+                            "VALUES (:userId, :testId, :questionId, :answerId)");
+        insertQuery.bindValue(":userId", userId);
+        insertQuery.bindValue(":testId", testId);
+        insertQuery.bindValue(":questionId", questionId);
+        insertQuery.bindValue(":answerId", selectedAnswerId);
+        insertQuery.exec();
+    }
+
+    qDebug() << "Ответы пользователя сохранены.";
+}
 
 void TestForm::finishTest()
 {
@@ -402,6 +479,23 @@ void TestForm::restartTest()
         }
 
         group->setExclusive(true);
+    }
+
+    QSqlQuery deleteAnswers;
+    deleteAnswers.prepare("DELETE FROM UserAnswers WHERE id_user = :userId AND id_test = :testId");
+    deleteAnswers.bindValue(":userId", userId);
+    deleteAnswers.bindValue(":testId", testId);
+    if (!deleteAnswers.exec()) {
+        qDebug() << "[ERROR] Ошибка при удалении ответов из UserAnswers:" << deleteAnswers.lastError().text();
+    }
+
+    // Удаляем итог теста (если он сохранялся)
+    QSqlQuery deleteResult;
+    deleteResult.prepare("DELETE FROM TestResults WHERE id_user = :userId AND id_test = :testId");
+    deleteResult.bindValue(":userId", userId);
+    deleteResult.bindValue(":testId", testId);
+    if (!deleteResult.exec()) {
+        qDebug() << "[ERROR] Ошибка при удалении результата из TestResults:" << deleteResult.lastError().text();
     }
 
     if (ui->scrollArea) {

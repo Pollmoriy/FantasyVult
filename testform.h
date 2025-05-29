@@ -37,8 +37,10 @@ private slots:
     void finishTest(); // слот для кнопки "Завершить тест"
 
 
-    void saveTestResult(); // слот для обработки сигнала сохранения
 
+    void saveTestResult(); // слот для обработки сигнала сохранения
+signals:
+    void returnToTests(); // Сигнал для возврата
 
 private:
     Ui::TestForm *ui;
@@ -58,6 +60,7 @@ private:
     QMap<QButtonGroup*, int> groupToQuestionId;
     int testId = -1; // будем устанавливать его при загрузке теста
     void lockAndColorAnswers();
+    void saveUserAnswers();
 
 };
 
