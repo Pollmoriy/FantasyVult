@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "favoriteform.h"
 #include "testsform.h"
+#include "universeform.h"
+#include "clickablelabel.h"
 #include "ui_catalogform.h"
 #include <QFontDatabase>
 #include <QSqlDatabase>
@@ -82,6 +84,13 @@ void CatalogForm::goToTests()
 }
 
 
+void CatalogForm::openUniverse(int universeId)
+{
+    UniverseForm* universeForm = new UniverseForm();
+    universeForm->setData(userId, universeId);
+    universeForm->show();
+    this->close(); // или hide()
+}
 
 
 
@@ -99,7 +108,7 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     universeCard->setStyleSheet("background-color: transparent;");
     universeCard->setFixedSize(566, 372);
 
-    QLabel *imageLabel = new QLabel(universeCard);
+    ClickableLabel *imageLabel = new ClickableLabel(universeCard);
     imageLabel->setFixedSize(566, 321);
     QPixmap pixmap(imagePath);
     if (pixmap.isNull()) {
@@ -110,7 +119,24 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     imageLabel->setStyleSheet("border: none;");
     imageLabel->setGeometry(0, 0, 566, 321);
 
-    // Кнопка лайка
+    connect(imageLabel, &ClickableLabel::clicked, this, [=]() {
+        QSqlQuery idQuery;
+        idQuery.prepare("SELECT id_universe FROM Universe WHERE name = :name");
+        idQuery.bindValue(":name", name);
+        if (!idQuery.exec() || !idQuery.next()) {
+            qDebug() << "Не удалось получить id_universe для перехода:" << name;
+            return;
+        }
+        int universeId = idQuery.value(0).toInt();
+
+        // Переход к окну вселенной
+        UniverseForm* universeForm = new UniverseForm();
+        universeForm->setData(userId, universeId); // создаешь этот метод в UniverseForm
+        universeForm->show();
+        this->close(); // закрываем каталог
+    });
+
+
     QPushButton *likeButton = new QPushButton(universeCard);
     likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
     likeButton->setIconSize(QSize(71, 67));
@@ -118,13 +144,11 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     likeButton->setGeometry(475, 20, 71, 67);
     likeButton->setCheckable(true);
 
-    // Проверка из базы: лайкнута ли эта вселенная текущим пользователем
     QSqlQuery checkQuery;
     checkQuery.prepare(
         "SELECT COUNT(*) FROM Likes "
         "JOIN Universe ON Likes.id_universe = Universe.id_universe "
-        "WHERE Likes.id_user = :id AND Universe.name = :name"
-        );
+        "WHERE Likes.id_user = :id AND Universe.name = :name");
     checkQuery.bindValue(":id", userId);
     checkQuery.bindValue(":name", name);
     if (checkQuery.exec() && checkQuery.next()) {
@@ -139,7 +163,7 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
         likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
         qDebug() << "Ошибка проверки лайка:" << checkQuery.lastError().text();
     }
-    // Обработка клика лайка
+
     connect(likeButton, &QPushButton::clicked, [this, likeButton, name]() {
         QSqlQuery query;
 
@@ -175,15 +199,12 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
         }
     });
 
-
-    // Нижняя панель с названием
     QFrame *infoFrame = new QFrame(universeCard);
     infoFrame->setGeometry(0, 313, 566, 58);
     infoFrame->setStyleSheet(
         "background-color: #07181D;"
         "border-top-left-radius: 0px; border-top-right-radius: 0px;"
-        "border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"
-        );
+        "border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;");
 
     QLabel *nameLabel = new QLabel(name, universeCard);
     int fontId = QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");

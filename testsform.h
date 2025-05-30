@@ -31,7 +31,7 @@ private:
     void loadTestCards();
     void clearTestCards();
     void showNoResultsDialog(const QString& searchText);
-
+ QSet<int> passedTestsSet;
 
 
 private slots:

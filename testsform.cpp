@@ -26,7 +26,49 @@
 
 
 
-// ==================== // Создание одной карточки ====================
+TestsForm::TestsForm(int userId, QWidget *parent)
+    : QWidget(parent), ui(new Ui::TestsForm), userId(userId)
+{
+    ui->setupUi(this);
+
+    // Добавляем шрифты один раз
+    static bool fontsLoaded = false;
+    if (!fontsLoaded) {
+        QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
+        QFontDatabase::addApplicationFont(":/fonts/Roboto_Condensed-Regular.ttf");
+        fontsLoaded = true;
+    }
+
+    // Устанавливаем layout для контейнера карточек, если его нет
+    if (!ui->cardContainer) {
+        qDebug() << "cardContainer == nullptr!";
+        return;
+    }
+    if (!ui->cardContainer->layout()) {
+        ui->cardContainer->setLayout(new QVBoxLayout());
+    }
+    ui->cardContainer->layout()->setContentsMargins(310, 0, 0, 0);
+
+    // Загружаем карточки тестов
+    loadTestCards();
+
+    // Задаём фоновое изображение
+    QPixmap pixmap1(":/images/test_background_img.jpg");
+    ui->backgroundLabel->setPixmap(pixmap1.scaled(ui->backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    // Подключаем кнопки навигации
+    connect(ui->btnMain, &QPushButton::clicked, this, &TestsForm::goToMain);
+    connect(ui->btnCatalog, &QPushButton::clicked, this, &TestsForm::goToCatalog);
+    connect(ui->btnFavorite, &QPushButton::clicked, this, &TestsForm::goToFavorite);
+    connect(ui->btnTests, &QPushButton::clicked, this, &TestsForm::goToTests);
+}
+
+TestsForm::~TestsForm()
+{
+    delete ui;
+}
+
+// Создание одной карточки теста
 QFrame* TestsForm::createTestCard(const QString& testName, const QString& imagePath, int index, int universeId)
 {
     QFrame* card = new QFrame();
@@ -40,11 +82,14 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
 
     QLabel* imageLabel = new QLabel();
     imageLabel->setFixedSize(334, 188);
+
+    // Загрузка и масштабирование изображения с проверкой
     QPixmap pix(imagePath);
     if (pix.isNull()) {
         qDebug() << "[ERROR] Не удалось загрузить изображение:" << imagePath;
+        // Можно установить заглушку, если нужно
     } else {
-        imageLabel->setPixmap(pix.scaled(imageLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        imageLabel->setPixmap(pix.scaled(imageLabel->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }
 
     QLabel* nameLabel = new QLabel(testName);
@@ -52,10 +97,7 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
     nameLabel->setAlignment(Qt::AlignCenter);
     nameLabel->setWordWrap(true);
 
-    int fontId = QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
-    QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).value(0, "Arial");
-    QFont nameFont(fontFamily, 25);
-    nameFont.setBold(true);
+    QFont nameFont("Cinzel Decorative", 25, QFont::Bold);
     nameLabel->setFont(nameFont);
     nameLabel->setStyleSheet("color: black; background: transparent;");
 
@@ -76,17 +118,10 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
     QPushButton* questStatusButton = new QPushButton();
     questStatusButton->setFixedSize(116, 116);
 
-    // ❗ Проверка по таблице UserAnswers
-    bool testPassed = false;
-    QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT COUNT(*) FROM UserAnswers WHERE id_user = :uid AND id_test = :tid");
-    checkQuery.bindValue(":uid", userId);
-    checkQuery.bindValue(":tid", universeId); // предполагается, что `id_test = id_universe`
-    if (checkQuery.exec() && checkQuery.next()) {
-        testPassed = checkQuery.value(0).toInt() > 0;
-    } else {
-        qDebug() << "[ERROR] Ошибка запроса к UserAnswers:" << checkQuery.lastError().text();
-    }
+    // Оптимизированная проверка статуса теста одним запросом для всех карточек (см. ниже)
+
+    // Здесь для упрощения передаём функцию, которая вернёт статус теста, чтобы не делать запрос для каждой карточки
+    bool testPassed = passedTestsSet.contains(universeId);
 
     QString iconPath = testPassed
                            ? ":/symbols/green_check_box.svg"
@@ -114,25 +149,31 @@ QFrame* TestsForm::createTestCard(const QString& testName, const QString& imageP
     return card;
 }
 
-
-
-// ==================== // Загрузка карточек ====================
+// Загрузка карточек тестов
 void TestsForm::loadTestCards()
 {
     QSqlDatabase db = QSqlDatabase::database();
     QSqlQuery query(db);
 
-    // Теперь запрашиваем также id_universe
+    // Запрашиваем тесты
     QString sqlQuery = "SELECT id_universe, name, small_image FROM Universe WHERE id_universe IN (1,2,3,4,5,7,9,10,11,14)";
-
-    if (!query.prepare(sqlQuery)) {
-        qDebug() << "Ошибка подготовки запроса:" << query.lastError().text();
+    if (!query.exec(sqlQuery)) {
+        qDebug() << "Ошибка выполнения запроса Universe:" << query.lastError().text();
         return;
     }
 
-    if (!query.exec()) {
-        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
-        return;
+    // Сначала получаем все id тестов, которые пользователь уже прошёл (оптимизация)
+    QSqlQuery passedQuery(db);
+    passedTestsSet.clear();
+    passedQuery.prepare("SELECT DISTINCT id_test FROM UserAnswers WHERE id_user = :uid");
+    passedQuery.bindValue(":uid", userId);
+    if (passedQuery.exec()) {
+        while (passedQuery.next()) {
+            int passedTestId = passedQuery.value(0).toInt();
+            passedTestsSet.insert(passedTestId);
+        }
+    } else {
+        qDebug() << "Ошибка запроса UserAnswers:" << passedQuery.lastError().text();
     }
 
     int index = 0;
@@ -158,67 +199,49 @@ void TestsForm::loadTestCards()
     }
 }
 
-
-
-// ==================== // Активная кнопка навигации ====================
+// Активная кнопка навигации
 void TestsForm::setActiveButton(QPushButton* newActive)
 {
-    // Сбросить стиль у предыдущей кнопки
     if (activeButton && activeButton != newActive) {
         activeButton->setStyleSheet(defaultButtonStyle);
     }
-
-    // Назначить новую активную кнопку
     activeButton = newActive;
-
-    // Применить активный стиль
     activeButton->setStyleSheet(activeButtonStyle);
 }
 
-
-
-// ==================== // Переход на главную ====================
+// Навигация
 void TestsForm::goToMain()
 {
-    setActiveButton(ui->btnMain); // Пример
-    MainWindow* mw = new MainWindow(this->userId);
+    setActiveButton(ui->btnMain);
+    MainWindow* mw = new MainWindow(userId);
     mw->show();
     this->close();
-
 }
 
-
-// ==================== // Переход на каталог ====================
 void TestsForm::goToCatalog()
 {
     setActiveButton(ui->btnCatalog);
-    CatalogForm* catalogform = new CatalogForm(this->userId);
+    CatalogForm* catalogform = new CatalogForm(userId);
     catalogform->show();
     this->close();
 }
 
-
-// ==================== // Переход на любимую ====================
 void TestsForm::goToFavorite()
 {
     setActiveButton(ui->btnFavorite);
-    FavoriteForm* fav = new FavoriteForm(this->userId);
+    FavoriteForm* fav = new FavoriteForm(userId);
     fav->show();
     this->close();
 }
 
-
-
-// ==================== // Переход на тесты ====================
 void TestsForm::goToTests()
 {
     setActiveButton(ui->btnTests);
-    TestsForm* testsform = new TestsForm(this->userId);
+    TestsForm* testsform = new TestsForm(userId);
     testsform->show();
     this->close();
 }
 
-// ==================== // Переход на тест ====================
 void TestsForm::goToTest(int universeId, const QString& testName, QPushButton* questStatusButton)
 {
     TestForm* testForm = new TestForm(userId, universeId, testName);
@@ -226,53 +249,7 @@ void TestsForm::goToTest(int universeId, const QString& testName, QPushButton* q
     this->close();
 
     connect(testForm, &TestForm::returnToTests, this, [=]() {
-        TestsForm* newTestsForm = new TestsForm(userId);  // пересоздаём страницу
+        TestsForm* newTestsForm = new TestsForm(userId);
         newTestsForm->show();
     });
-}
-
-
-
-
-
-
-
-TestsForm::TestsForm(int userId, QWidget *parent)
-    : QWidget(parent), ui(new Ui::TestsForm), userId(userId)
-{
-    ui->setupUi(this);
-
-
-    QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
-    QFontDatabase::addApplicationFont(":/fonts/Roboto_Condensed-Regular.ttf");
-
-    if (!ui->cardContainer) {
-        qDebug() << "cardContainer == nullptr!";
-        return;
-    }
-
-    if (!ui->cardContainer->layout()) {
-        ui->cardContainer->setLayout(new QVBoxLayout());
-    }
-    ui->cardContainer->layout()->setContentsMargins(310, 0, 0, 0);
-
-
-
-
-    loadTestCards();
-
-    QPixmap pixmap1(":/images/test_background_img.jpg");
-    ui->backgroundLabel->setPixmap(pixmap1.scaled(ui->backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-
-    connect(ui->btnMain, &QPushButton::clicked, this, &TestsForm::goToMain);
-    connect(ui->btnCatalog, &QPushButton::clicked, this, &TestsForm::goToCatalog);
-    connect(ui->btnFavorite, &QPushButton::clicked, this, &TestsForm::goToFavorite);
-    connect(ui->btnTests, &QPushButton::clicked, this, &TestsForm::goToTests);
-
-
-}
-
-TestsForm::~TestsForm()
-{
-    delete ui;
 }

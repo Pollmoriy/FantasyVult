@@ -21,11 +21,13 @@ SOURCES += \
     resultdialog.cpp \
     testform.cpp \
     testsform.cpp \
+    universeform.cpp \
     utils.cpp
 
 HEADERS += \
     buttonstyles.h \
     catalogform.h \
+    clickablelabel.h \
     favoriteform.h \
     loginform.h \
     mainwindow.h \
@@ -33,6 +35,7 @@ HEADERS += \
     resultdialog.h \
     testform.h \
     testsform.h \
+    universeform.h \
     utils.h
 
 FORMS += \
@@ -43,7 +46,8 @@ FORMS += \
     registerform.ui \
     resultdialog.ui \
     testform.ui \
-    testsform.ui
+    testsform.ui \
+    universeform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

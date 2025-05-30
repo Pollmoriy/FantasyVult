@@ -51,6 +51,8 @@ private:
     void setActiveButton(QPushButton* newActive);
 
      int userId;
+    void openUniverse(int universeId);
+
 };
 
 #endif // CATALOGFORM_H
