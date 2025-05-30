@@ -29,6 +29,7 @@ private:
     QWidget *contentContainer;
 
     void loadFirstBlock();
+    void loadMainTextBlock();
 };
 
 #endif // UNIVERSEFORM_H

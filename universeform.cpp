@@ -40,6 +40,7 @@ void UniverseForm::setData(int userId, int universeId)
     qDebug() << "Received universeId:" << universeId;
 
     loadFirstBlock();
+    loadMainTextBlock();
 }
 
 void UniverseForm::loadFirstBlock()
@@ -94,7 +95,7 @@ void UniverseForm::loadFirstBlock()
         titleLabel->setFont(font);
         titleLabel->setStyleSheet("color: white; background: transparent;");
         titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-        titleLabel->setGeometry(0, 960, 1920, 120);  // 120 пикселей от низа блока
+        titleLabel->setGeometry(0, 900, 1920, 120);  // 120 пикселей от низа блока
 
         // Добавляем блок в вертикальный layout
         verticalLayout->addWidget(block);
@@ -103,6 +104,92 @@ void UniverseForm::loadFirstBlock()
     }
 }
 
+
+void UniverseForm::loadMainTextBlock()
+{
+    QSqlQuery query;
+    query.prepare(R"(
+        SELECT id_universe, block_type, content_text, image
+        FROM UniverseContent
+        WHERE id_universe = :id
+    )");
+    query.bindValue(":id", universeId);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        return;
+    }
+
+    bool blockFound = false;
+
+    while (query.next()) {
+        QString blockType = query.value(1).toString();
+
+        qDebug() << "Найден блок:"
+                 << "universeId =" << query.value(0).toInt()
+                 << "block_type =" << blockType
+                 << "content_text =" << query.value(2).toString().left(50)
+                 << "image =" << query.value(3).toString();
+
+        if (blockType == "main_block") {
+            blockFound = true;
+
+            QString contentText = query.value(2).toString();
+            QString imagePath = query.value(3).toString();
+
+            QWidget *block = new QWidget();
+            block->setFixedSize(1920, 1080);
+
+            // Фон - картинка
+            QLabel *backgroundLabel = new QLabel(block);
+            backgroundLabel->setFixedSize(1920, 1080);
+            QPixmap pixmap(imagePath);
+            if (pixmap.isNull()) {
+                qDebug() << "Ошибка: не удалось загрузить изображение main_block:" << imagePath;
+                pixmap = QPixmap(":/images/placeholder.png");
+            }
+            backgroundLabel->setPixmap(pixmap.scaled(backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+            backgroundLabel->setGeometry(0, 0, 1920, 1080);
+            backgroundLabel->lower();
+
+            // Полупрозрачный черный прямоугольник
+            QWidget *overlay = new QWidget(block);
+            overlay->setFixedSize(1504, 1080);
+            overlay->move((1920 - 1504) / 2, 0);
+            overlay->setStyleSheet("background-color: rgba(0, 0, 0, 128);");
+
+            // Создаем layout для текста с отступами
+            QVBoxLayout *overlayLayout = new QVBoxLayout(overlay);
+            overlayLayout->setContentsMargins(30, 20, 30, 20); // отступы слева, сверху, справа, снизу
+            overlayLayout->setSpacing(0);
+
+            // Текст на overlay
+            QLabel *textLabel = new QLabel();
+            textLabel->setText(contentText);
+            textLabel->setAlignment(Qt::AlignJustify | Qt::AlignVCenter);
+            QFont font = textLabel->font();
+            font.setBold(true);
+            font.setPointSize(30);
+            textLabel->setFont(font);
+            textLabel->setStyleSheet("color: white; background: transparent;");
+            textLabel->setWordWrap(true);
+
+            // Чтобы текст занимал всю высоту overlay, устанавливаем растяжение
+            overlayLayout->addWidget(textLabel);
+            overlayLayout->setStretch(0, 1);
+
+            verticalLayout->addWidget(block);
+
+            // Если нужно загрузить только первый найденный блок main_block,
+            // то можно прервать цикл здесь:
+            break;
+        }
+    }
+
+    if (!blockFound) {
+        qDebug() << "Блок main_block не найден для universeId =" << universeId;
+    }
+}
 
 
 

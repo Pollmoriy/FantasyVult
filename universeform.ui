@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1935</width>
-    <height>1080</height>
+    <height>7250</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>7250</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -32,15 +38,15 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>-4620</y>
+      <y>0</y>
       <width>1904</width>
-      <height>6776</height>
+      <height>7250</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>0</width>
-      <height>6776</height>
+      <height>7250</height>
      </size>
     </property>
     <widget class="QWidget" name="contentContainer" native="true">
@@ -49,8 +55,14 @@
        <x>0</x>
        <y>0</y>
        <width>1920</width>
-       <height>6776</height>
+       <height>7250</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>7250</height>
+      </size>
      </property>
      <property name="styleSheet">
       <string notr="true"/>
