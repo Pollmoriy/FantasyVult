@@ -41,6 +41,7 @@ void UniverseForm::setData(int userId, int universeId)
 
     loadFirstBlock();
     loadMainTextBlock();
+    loadWorldGeographyBlock();
 }
 
 void UniverseForm::loadFirstBlock()
@@ -192,4 +193,74 @@ void UniverseForm::loadMainTextBlock()
 }
 
 
+void UniverseForm::loadWorldGeographyBlock()
+{
+    QSqlQuery query;
+    query.prepare(R"(
+        SELECT content_text, image
+        FROM UniverseContent
+        WHERE id_universe = :id AND block_type = 'world_geography'
+        LIMIT 1
+    )");
+    query.bindValue(":id", universeId);
 
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса:" << query.lastError().text();
+        return;
+    }
+
+    if (query.next()) {
+        QString contentText = query.value("content_text").toString();
+        QString imagePath = query.value("image").toString();
+
+        qDebug() << "Найден блок: universeId =" << universeId
+                 << "block_type = 'world_geography'"
+                 << "content_text =" << contentText.left(50)
+                 << "image =" << imagePath;
+
+        QWidget *block = new QWidget();
+        block->setFixedSize(1920, 1340);
+
+        // Фоновая картинка
+        QLabel *backgroundLabel = new QLabel(block);
+        backgroundLabel->setFixedSize(1920, 1340);
+        QPixmap pixmap(imagePath);
+        if (pixmap.isNull()) {
+            qDebug() << "Ошибка: не удалось загрузить изображение world_geography:" << imagePath;
+            pixmap = QPixmap(":/images/placeholder.png");
+        }
+        backgroundLabel->setPixmap(pixmap.scaled(backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        backgroundLabel->setGeometry(0, 0, 1920, 1340);
+        backgroundLabel->lower();
+
+        // Полупрозрачный прямоугольник
+        QWidget *overlay = new QWidget(block);
+        overlay->setFixedSize(1503, 1354);
+        overlay->move((1920 - 1503) / 2, 0);
+        overlay->setStyleSheet("background-color: rgba(0, 0, 0, 128);");
+
+        // Заголовок блока
+        QLabel *titleLabel = new QLabel("Мир и география", overlay);
+        titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+        titleLabel->setFixedWidth(1503);
+        titleLabel->move(0, 40);  // отступ сверху
+        QFont titleFont("Inter", 64, QFont::Bold);
+        titleLabel->setFont(titleFont);
+        titleLabel->setStyleSheet("color: white; background: transparent;");
+
+        // Текст блока
+        QLabel *textLabel = new QLabel(overlay);
+        textLabel->setText(contentText);
+        textLabel->setWordWrap(true);
+        textLabel->setAlignment(Qt::AlignJustify);
+        QFont font("Inter", 30);
+        font.setBold(false);
+        textLabel->setFont(font);
+        textLabel->setStyleSheet("color: white; background: transparent;");
+        textLabel->setGeometry(40, 160, 1503 - 80, 1354 - 160);  // отступы по краям и сверху
+
+        verticalLayout->addWidget(block);
+    } else {
+        qDebug() << "Блок world_geography не найден для universeId =" << universeId;
+    }
+}

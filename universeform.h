@@ -30,6 +30,8 @@ private:
 
     void loadFirstBlock();
     void loadMainTextBlock();
+    void loadWorldGeographyBlock();
+
 };
 
 #endif // UNIVERSEFORM_H
