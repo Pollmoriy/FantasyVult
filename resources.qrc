@@ -2,23 +2,9 @@
     <qresource lang="/&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/images&quot;>&#xa;        &lt;file>images/background.png&lt;/file>&#xa; &lt;file>images/login_img.jpg&lt;/file>    &lt;/qresource>&#xa;&lt;/RCC>" prefix="/">
         <file>images/background.png</file>
         <file>images/login_img.jpg</file>
-        <file>images/singin_img.jpg</file>
         <file>images/singin_img2.jpg</file>
         <file>images/main_background_img.jpg</file>
         <file>images/catalog_background_img.jpg</file>
-        <file>images/Arcane.jpg</file>
-        <file>images/Avatar The Last Airbender.jpg</file>
-        <file>images/Dragone Age.jpg</file>
-        <file>images/Dungeons &amp; Dragons.jpg</file>
-        <file>images/Final Fantasy.jpg</file>
-        <file>images/Game of Thrones.jpg</file>
-        <file>images/Grishaverse.jpg</file>
-        <file>images/Naruto.jpg</file>
-        <file>images/The Elder Scrolls.jpg</file>
-        <file>images/The Lord of the Rings.jpg</file>
-        <file>images/The Witcher.jpg</file>
-        <file>images/The Chronicles of Narnia.jpg</file>
-        <file>images/World of Warcraft.jpg</file>
         <file>images/harrypotter.png</file>
         <file>images/arcane.png</file>
         <file>images/avatar.png</file>
@@ -30,9 +16,6 @@
         <file>images/final_fantasy.png</file>
         <file>images/got.png</file>
         <file>images/grishaverse.png</file>
-        <file>images/harry potter_main.png</file>
-        <file>images/harrypotter_bg.webp</file>
-        <file>images/Hogwarts.jpg</file>
         <file>images/lor.png</file>
         <file>images/narnia.png</file>
         <file>images/naruto.png</file>
@@ -51,6 +34,7 @@
         <file>images/wow_small.png</file>
         <file>images/rings_small.png</file>
         <file>images/elden_small.png</file>
+        <file>images/harrypotter_universe.png</file>
     </qresource>
     <qresource lang="&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/fonts&quot;>&#xa;        &lt;file>fonts/Raleway-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Roboto-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Cinzel-Regular.ttf&lt;/file>&#xa;    &lt;/qresource>&#xa;&lt;/RCC>&#xa;" prefix="/">
         <file>fonts/CinzelDecorative-Bold.ttf</file>
