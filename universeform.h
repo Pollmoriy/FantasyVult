@@ -7,6 +7,11 @@
 #include <QStackedWidget>
 #include <QPushButton>
 
+struct HeroData {
+    QString name;
+    QString description;
+    QString imagePath;
+};
 
 namespace Ui {
 class UniverseForm;
@@ -42,6 +47,18 @@ private:
     int currentSlideIndex = 0;
     int currentPlaceIndex = 0;
     QVector<QPair<QString, QString>> places; // <image, caption>
+
+    void loadHeroesBlock();
+    void showPreviousHero();
+    void showNextHero();
+
+    QVector<HeroData> heroesData;
+
+    int currentHeroIndex = 0;
+    QWidget *heroCard = nullptr;
+    void showHeroAt(int index);
+
+
 private slots:
     void showPreviousSlide();
     void showNextSlide();

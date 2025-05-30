@@ -43,6 +43,7 @@ void UniverseForm::setData(int userId, int universeId)
     loadMainTextBlock();
     loadWorldGeographyBlock();
     loadPlacesSliderBlock();
+    loadHeroesBlock();
 }
 
 void UniverseForm::loadFirstBlock()
@@ -396,4 +397,208 @@ void UniverseForm::showNextSlide()
     if (!sliderStackWidget) return;
     currentSlideIndex = (currentSlideIndex + 1) % sliderStackWidget->count();
     sliderStackWidget->setCurrentIndex(currentSlideIndex);
+}
+
+
+void UniverseForm::loadHeroesBlock() {
+
+    qDebug() << "Загрузка блока героев для вселенной с ID:" << universeId;
+
+    QSqlQuery query;
+    query.prepare(R"(
+    SELECT name, description, image
+    FROM UniverseHeroes
+    WHERE id_universe = :id
+)");
+    query.bindValue(":id", universeId);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка выполнения запроса героев:" << query.lastError().text();
+        return;
+    }
+
+
+    heroesData.clear();
+
+    while (query.next()) {
+        QString name = query.value(0).toString();
+        QString desc = query.value(1).toString();
+        QString imgPath = query.value(2).toString();
+
+        qDebug() << "Найден герой:" << name << "| картинка:" << imgPath;
+
+        HeroData hero;
+        hero.name = name;
+        hero.description = desc;
+        hero.imagePath = imgPath;
+        heroesData.append(hero);
+
+        qDebug() << "Loaded hero:" << name << imgPath;
+
+    }
+
+    if (heroesData.isEmpty()) {
+        qDebug() << "Нет данных о героях для этой вселенной!";
+        return;
+    }
+
+    // Базовый блок
+    QWidget *block = new QWidget();
+    block->setFixedSize(1920, 1213);
+
+    // Фон
+    QLabel *backgroundLabel = new QLabel(block);
+    backgroundLabel->setFixedSize(1920, 1213);
+
+    QSqlQuery bgQuery;
+    bgQuery.prepare("SELECT main_image FROM Universe WHERE id_universe = :id");
+    bgQuery.bindValue(":id", universeId);
+    if (bgQuery.exec() && bgQuery.next()) {
+        QString bgImage = bgQuery.value(0).toString();
+        qDebug() << "Фоновое изображение блока героев:" << bgImage;
+        QPixmap bgPixmap(bgImage);
+        backgroundLabel->setPixmap(bgPixmap.scaled(backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    } else {
+        qDebug() << "Ошибка при загрузке фонового изображения для блока героев.";
+    }
+
+    // Заголовок
+    QLabel *title = new QLabel("HEROES", block);
+    int fontId = QFontDatabase::addApplicationFont(":/fonts/CinzelDecorative-Regular.ttf");
+    if (fontId == -1) {
+        qDebug() << "Не удалось загрузить шрифт CinzelDecorative-Regular.ttf";
+    } else {
+        QString family = QFontDatabase::applicationFontFamilies(fontId).at(0);
+        QFont font(family, 120, QFont::Bold);
+        title->setFont(font);
+    }
+    title->setStyleSheet("color: white;");
+    title->adjustSize();
+   title->move((1920 - title->width()) / 2, 20);
+
+
+    // Карточка героя
+    heroCard = new QWidget(block);
+    heroCard->setFixedSize(1356, 778);
+    heroCard->move((1920 - 1356) / 2, 218);
+    heroCard->setStyleSheet("background-color: black; border-radius: 25px;");
+
+    // Стрелки
+    QPushButton *leftButton = new QPushButton(block);
+    leftButton->setFixedSize(127, 115);
+    leftButton->move((1920 / 2) - 127 - 40, 218 + 778 + 59);
+    leftButton->setStyleSheet(R"(
+        QPushButton {
+            background-color: black;
+            border-radius: 20px;
+        }
+        QPushButton:hover {
+            background-color: rgba(0, 0, 0, 180);
+        }
+    )");
+    QLabel *leftIcon = new QLabel(leftButton);
+    leftIcon->setPixmap(QPixmap(":/symbols/Arrow.svg").scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    leftIcon->setFixedSize(80, 80);
+    leftIcon->move((127 - 80) / 2, (115 - 80) / 2);
+
+    QPushButton *rightButton = new QPushButton(block);
+    rightButton->setFixedSize(127, 115);
+    rightButton->move((1920 / 2) + 40, 218 + 778 + 59);
+    rightButton->setStyleSheet(R"(
+        QPushButton {
+            background-color: black;
+            border-radius: 20px;
+        }
+        QPushButton:hover {
+            background-color: rgba(0, 0, 0, 180);
+        }
+    )");
+    QPixmap rightPixmap(":/symbols/Arrow.svg");
+    rightPixmap = rightPixmap.transformed(QTransform().scale(-1, 1));
+    QLabel *rightIcon = new QLabel(rightButton);
+    rightIcon->setPixmap(rightPixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    rightIcon->setFixedSize(80, 80);
+    rightIcon->move((127 - 80) / 2, (115 - 80) / 2);
+
+    // Обработчики
+    connect(leftButton, &QPushButton::clicked, this, [this]() {
+        currentHeroIndex = (currentHeroIndex - 1 + heroesData.size()) % heroesData.size();
+        showHeroAt(currentHeroIndex);
+    });
+    connect(rightButton, &QPushButton::clicked, this, [this]() {
+        currentHeroIndex = (currentHeroIndex + 1) % heroesData.size();
+        showHeroAt(currentHeroIndex);
+    });
+
+    verticalLayout->addWidget(block);
+    currentHeroIndex = 0;
+    showHeroAt(currentHeroIndex);
+}
+
+void UniverseForm::showHeroAt(int index) {
+    qDebug() << "Показ героя #" << index << " из " << heroesData.size();
+
+    if (index < 0 || index >= heroesData.size()) {
+        qDebug() << "Индекс героя вне диапазона!";
+        return;
+    }
+
+    // Удаляем все дочерние виджеты heroCard (очистка от предыдущих карточек)
+    QList<QWidget*> children = heroCard->findChildren<QWidget*>();
+    for (QWidget *child : children) {
+        delete child;
+    }
+
+    // Удаляем layout, если есть (чтобы избежать конфликта)
+    if (heroCard->layout()) {
+        delete heroCard->layout();
+    }
+
+    // Создаем новый layout для карточки
+    QHBoxLayout *cardLayout = new QHBoxLayout(heroCard);
+    cardLayout->setContentsMargins(61, 44, 61, 44);
+    cardLayout->setSpacing(50);
+
+    // Картинка героя
+    QLabel *imageLabel = new QLabel();
+    imageLabel->setFixedSize(501, 690);
+    QPixmap heroImg(heroesData[index].imagePath);
+    if (heroImg.isNull()) {
+        qDebug() << "Ошибка загрузки изображения героя:" << heroesData[index].imagePath;
+        heroImg = QPixmap(":/images/placeholder.png");
+    }
+    imageLabel->setPixmap(heroImg.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    cardLayout->addWidget(imageLabel);
+
+    // Текст героя
+    QVBoxLayout *textLayout = new QVBoxLayout();
+    QLabel *nameLabel = new QLabel(heroesData[index].name);
+    nameLabel->setFont(QFont("Inter", 35, QFont::Bold));
+    nameLabel->setStyleSheet("color: white;");
+    nameLabel->setAlignment(Qt::AlignCenter);
+    textLayout->addWidget(nameLabel);
+
+    QLabel *descLabel = new QLabel(heroesData[index].description);
+    descLabel->setFont(QFont("Inter", 30));
+    descLabel->setStyleSheet("color: white;");
+    descLabel->setWordWrap(true);
+    textLayout->addWidget(descLabel);
+
+    cardLayout->addLayout(textLayout);
+}
+
+
+
+void UniverseForm::showPreviousHero()
+{
+    if (heroesData.isEmpty()) return;
+    currentHeroIndex = (currentHeroIndex - 1 + heroesData.size()) % heroesData.size();
+    showHeroAt(currentHeroIndex);
+}
+
+void UniverseForm::showNextHero()
+{
+    if (heroesData.isEmpty()) return;
+    currentHeroIndex = (currentHeroIndex + 1) % heroesData.size();
+    showHeroAt(currentHeroIndex);
 }

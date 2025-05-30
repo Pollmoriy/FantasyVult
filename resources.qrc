@@ -62,5 +62,8 @@
         <file>slider/diagonalley.png</file>
         <file>slider/forbiddenforest.png</file>
         <file>slider/hogwarts.png</file>
+        <file>slider/harrypotter.png</file>
+        <file>slider/hermione.png</file>
+        <file>slider/ron.png</file>
     </qresource>
 </RCC>
