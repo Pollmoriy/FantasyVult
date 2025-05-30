@@ -42,6 +42,7 @@ void UniverseForm::setData(int userId, int universeId)
     loadFirstBlock();
     loadMainTextBlock();
     loadWorldGeographyBlock();
+    loadPlacesSliderBlock();
 }
 
 void UniverseForm::loadFirstBlock()
@@ -263,4 +264,136 @@ void UniverseForm::loadWorldGeographyBlock()
     } else {
         qDebug() << "Блок world_geography не найден для universeId =" << universeId;
     }
+}
+
+
+void UniverseForm::loadPlacesSliderBlock()
+{
+    QSqlQuery query;
+    query.prepare(R"(
+        SELECT caption, image FROM UniverseSlider
+        WHERE id_universe = :id AND slider_type = 'places'
+        ORDER BY id_universeslider;
+    )");
+    query.bindValue(":id", universeId);
+
+    if (!query.exec()) {
+        qDebug() << "Ошибка запроса к UniverseSlider:" << query.lastError().text();
+        return;
+    }
+
+    QVector<QWidget*> slides;
+
+    while (query.next()) {
+        QString caption = query.value(0).toString();
+        QString imagePath = query.value(1).toString();
+
+        QWidget *slide = new QWidget();
+        slide->setFixedSize(1920, 1080);
+
+        QLabel *backgroundLabel = new QLabel(slide);
+        backgroundLabel->setFixedSize(1920, 1080);
+        QPixmap pixmap(imagePath);
+        if (pixmap.isNull()) {
+            qDebug() << "Не удалось загрузить изображение слайдера:" << imagePath;
+            pixmap = QPixmap(":/images/placeholder.png");
+        }
+        backgroundLabel->setPixmap(pixmap.scaled(1920, 1080, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        backgroundLabel->move(0, 0);
+
+        // Полупрозрачный черный прямоугольник
+        QWidget *captionBackground = new QWidget(slide);
+        captionBackground->setGeometry((1920 - 1338) / 2, 829, 1338, 176);
+        captionBackground->setStyleSheet("background-color: rgba(0, 0, 0, 180); border-radius: 20px;");
+
+        QLabel *captionLabel = new QLabel(caption, captionBackground);
+        captionLabel->setGeometry(30, 20, 1338 - 60, 176 - 40); // Отступы: 30 слева/справа, 20 сверху/снизу
+        QFont font("Inter", 30);
+        captionLabel->setFont(font);
+        captionLabel->setStyleSheet("color: white; background: transparent;");
+        captionLabel->setWordWrap(true);
+        captionLabel->setAlignment(Qt::AlignCenter);
+
+        slides.append(slide);
+    }
+
+    if (slides.isEmpty()) {
+        qDebug() << "Нет слайдов для places.";
+        return;
+    }
+
+    // Слайдер
+    QWidget *block = new QWidget();
+    block->setFixedSize(1920, 1080);
+
+    sliderStackWidget = new QStackedWidget(block);
+    sliderStackWidget->setGeometry(0, 0, 1920, 1080);
+
+    for (QWidget *slide : slides) {
+        sliderStackWidget->addWidget(slide);
+    }
+
+    // Левая кнопка
+    QPushButton *leftButton = new QPushButton(block);
+    leftButton->setFixedSize(127, 115);
+    leftButton->move(50, 484);  // позиция слева
+    leftButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: black;
+        border-radius: 20px;
+QPushButton:hover {
+        background-color: rgba(0, 0, 0, 180);
+    }
+)");
+    QLabel *leftArrow = new QLabel(leftButton);
+    leftArrow->setFixedSize(80, 80);
+    leftArrow->setAlignment(Qt::AlignCenter);
+    leftArrow->move((127 - 80) / 2, (115 - 80) / 2);
+    leftArrow->setPixmap(QPixmap(":/symbols/Arrow.svg").scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    // Правая кнопка
+    QPushButton *rightButton = new QPushButton(block);
+    rightButton->setFixedSize(127, 115);
+    rightButton->move(1920 - 127 - 50, 484);  // позиция справа
+    rightButton->setStyleSheet(R"(
+    QPushButton {
+        background-color: black;
+        border-radius: 20px;
+QPushButton:hover {
+        background-color: rgba(0, 0, 0, 180);
+    }
+)");
+    QLabel *rightArrow = new QLabel(rightButton);
+    rightArrow->setFixedSize(80, 80);
+    rightArrow->setAlignment(Qt::AlignCenter);
+    rightArrow->move((127 - 80) / 2, (115 - 80) / 2);
+
+    QPixmap arrowPixmap(":/symbols/Arrow.svg");
+    QTransform transform;
+    transform.scale(-1, 1);  // зеркальное отражение по горизонтали
+    arrowPixmap = arrowPixmap.transformed(transform, Qt::SmoothTransformation);
+
+    rightArrow->setPixmap(arrowPixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+
+    connect(leftButton, &QPushButton::clicked, this, &UniverseForm::showPreviousSlide);
+    connect(rightButton, &QPushButton::clicked, this, &UniverseForm::showNextSlide);
+
+
+    verticalLayout->addWidget(block);
+}
+
+
+void UniverseForm::showPreviousSlide()
+{
+    if (!sliderStackWidget) return;
+    currentSlideIndex = (currentSlideIndex - 1 + sliderStackWidget->count()) % sliderStackWidget->count();
+    sliderStackWidget->setCurrentIndex(currentSlideIndex);
+}
+
+void UniverseForm::showNextSlide()
+{
+    if (!sliderStackWidget) return;
+    currentSlideIndex = (currentSlideIndex + 1) % sliderStackWidget->count();
+    sliderStackWidget->setCurrentIndex(currentSlideIndex);
 }

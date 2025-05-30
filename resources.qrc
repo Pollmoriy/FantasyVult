@@ -58,4 +58,9 @@
         <file>symbols/green_check_box.svg</file>
         <file>symbols/black_check_box.svg</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>slider/diagonalley.png</file>
+        <file>slider/forbiddenforest.png</file>
+        <file>slider/hogwarts.png</file>
+    </qresource>
 </RCC>

@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QScrollArea>
+#include <QStackedWidget>
+#include <QPushButton>
+
 
 namespace Ui {
 class UniverseForm;
@@ -31,7 +34,17 @@ private:
     void loadFirstBlock();
     void loadMainTextBlock();
     void loadWorldGeographyBlock();
+    void loadPlacesSliderBlock();
 
+    QStackedWidget *sliderStackWidget = nullptr;
+    QPushButton *leftArrowButton = nullptr;
+    QPushButton *rightArrowButton = nullptr;
+    int currentSlideIndex = 0;
+    int currentPlaceIndex = 0;
+    QVector<QPair<QString, QString>> places; // <image, caption>
+private slots:
+    void showPreviousSlide();
+    void showNextSlide();
 };
 
 #endif // UNIVERSEFORM_H
