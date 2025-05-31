@@ -1,5 +1,7 @@
 #include "universeform.h"
 #include "ui_universeform.h"
+#include "catalogform.h"
+
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QLabel>
@@ -39,12 +41,26 @@ void UniverseForm::setData(int userId, int universeId)
     qDebug() << "Received userId:" << userId;
     qDebug() << "Received universeId:" << universeId;
 
+    QSqlQuery nameQuery;
+    nameQuery.prepare("SELECT name FROM Universe WHERE id_universe = :id");
+    nameQuery.bindValue(":id", universeId);
+    if (nameQuery.exec() && nameQuery.next()) {
+        currentUniverseName = nameQuery.value(0).toString();
+        qDebug() << "[ВСЕЛЕННАЯ] Загружено имя:" << currentUniverseName;
+    } else {
+        qDebug() << "[ОШИБКА] Не удалось загрузить имя вселенной по ID:" << nameQuery.lastError().text();
+        return;
+    }
+
+
     loadFirstBlock();
     loadMainTextBlock();
     loadWorldGeographyBlock();
     loadPlacesSliderBlock();
     loadHeroesBlock();
     loadFactsBlock();
+    addLikeBlock(currentUniverseName);
+
 
 }
 
@@ -646,7 +662,7 @@ void UniverseForm::loadFactsBlock() {
 
     // Фон
     QLabel *backgroundLabel = new QLabel(block);
-    backgroundLabel->setFixedSize(1920, 1457);
+    backgroundLabel->setFixedSize(1920, 1250);
 
     QSqlQuery bgQuery;
     bgQuery.prepare("SELECT main_image FROM Universe WHERE id_universe = :id");
@@ -781,5 +797,116 @@ void UniverseForm::showFactAt(int index) {
     textLayout->addWidget(descLabel);
 
     cardLayout->addLayout(textLayout);
+}
+
+void UniverseForm::addLikeBlock(const QString &universeName) {
+    QWidget *likeBlock = new QWidget();
+    likeBlock->setFixedSize(1920, 207);
+    likeBlock->setStyleSheet("background-color: black;");
+
+    QHBoxLayout *layout = new QHBoxLayout(likeBlock);
+    layout->setContentsMargins(60, 0, 60, 0);
+    layout->setSpacing(50);
+    layout->setAlignment(Qt::AlignVCenter);
+
+    // Кнопка возврата в каталог
+    QPushButton *backButton = new QPushButton();
+    backButton->setFixedSize(150, 150);
+    backButton->setStyleSheet(R"(
+        QPushButton {
+            border: none;
+            border-radius: 15px;
+        }
+    )");
+    QLabel *arrowIcon = new QLabel(backButton);
+    arrowIcon->setPixmap(QPixmap(":/symbols/Arrow.svg").scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    arrowIcon->setFixedSize(129, 129);
+    arrowIcon->move((129 - 80) / 2, (129 - 80) / 2);
+
+    connect(backButton, &QPushButton::clicked, this, &UniverseForm::goToCatalog);
+
+    // Текст
+    QLabel *textLabel = new QLabel("Добавь понравившююся вселенную в любимое");
+    textLabel->setFont(QFont("Cinzel", 45));
+    textLabel->setStyleSheet("color: white;");
+    textLabel->setAlignment(Qt::AlignCenter);
+
+    // Кнопка лайка
+    QPushButton *likeButton = new QPushButton();
+    likeButton->setFixedSize(130, 114);
+    likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
+    likeButton->setIconSize(QSize(130, 114));
+    likeButton->setStyleSheet("background: transparent; border: none;");
+    likeButton->setCheckable(true);
+
+    // Проверка наличия лайка
+    QSqlQuery checkQuery;
+    checkQuery.prepare(R"(
+        SELECT COUNT(*) FROM Likes
+        JOIN Universe ON Likes.id_universe = Universe.id_universe
+        WHERE Likes.id_user = :id AND Universe.name = :name
+    )");
+    checkQuery.bindValue(":id", userId);
+    checkQuery.bindValue(":name", universeName);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        if (checkQuery.value(0).toInt() > 0) {
+            likeButton->setChecked(true);
+            likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
+            likedUniverses.insert(universeName);
+        }
+    } else {
+        qDebug() << "Ошибка проверки лайка:" << checkQuery.lastError().text();
+    }
+
+    connect(likeButton, &QPushButton::clicked, this, [=]() {
+        QSqlQuery query;
+
+        QSqlQuery idQuery;
+        idQuery.prepare("SELECT id_universe FROM Universe WHERE name = :name");
+        idQuery.bindValue(":name", universeName);
+        if (!idQuery.exec() || !idQuery.next()) {
+            qDebug() << "Не удалось получить id вселенной по имени:" << universeName;
+            return;
+        }
+        int universeId = idQuery.value(0).toInt();
+
+        if (likeButton->isChecked()) {
+            likeButton->setIcon(QIcon(":/symbols/heart_pink.svg"));
+            likedUniverses.insert(universeName);
+
+            query.prepare("INSERT INTO Likes (id_user, id_universe) VALUES (:userId, :universeId)");
+            query.bindValue(":userId", userId);
+            query.bindValue(":universeId", universeId);
+            if (!query.exec()) {
+                qDebug() << "Ошибка при добавлении лайка:" << query.lastError().text();
+            }
+        } else {
+            likeButton->setIcon(QIcon(":/symbols/heart_white.svg"));
+            likedUniverses.remove(universeName);
+
+            query.prepare("DELETE FROM Likes WHERE id_user = :userId AND id_universe = :universeId");
+            query.bindValue(":userId", userId);
+            query.bindValue(":universeId", universeId);
+            if (!query.exec()) {
+                qDebug() << "Ошибка при удалении лайка:" << query.lastError().text();
+            }
+        }
+    });
+
+    layout->addWidget(backButton);
+    layout->addStretch();
+    layout->addWidget(textLabel);
+    layout->addStretch();
+    layout->addWidget(likeButton);
+
+    verticalLayout->addWidget(likeBlock);
+}
+
+
+void UniverseForm::goToCatalog() {
+    CatalogForm *catalogForm = new CatalogForm(userId);
+    catalogForm->show();
+    this->close();
 }
 

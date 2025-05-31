@@ -32,6 +32,7 @@ public:
     explicit UniverseForm(QWidget *parent = nullptr);
     ~UniverseForm();
     void setData(int userId, int universeId);
+    QSet<QString> likedUniverses;
 
 private:
     Ui::UniverseForm *ui;
@@ -71,10 +72,13 @@ private:
 
     void loadFactsBlock();
     void showFactAt(int index);
+    void addLikeBlock(const QString &universeName);
+    QString currentUniverseName;
 
 private slots:
     void showPreviousSlide();
     void showNextSlide();
+    void goToCatalog();
 };
 
 #endif // UNIVERSEFORM_H
