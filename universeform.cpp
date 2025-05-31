@@ -44,6 +44,8 @@ void UniverseForm::setData(int userId, int universeId)
     loadWorldGeographyBlock();
     loadPlacesSliderBlock();
     loadHeroesBlock();
+    loadFactsBlock();
+
 }
 
 void UniverseForm::loadFirstBlock()
@@ -602,3 +604,182 @@ void UniverseForm::showNextHero()
     currentHeroIndex = (currentHeroIndex + 1) % heroesData.size();
     showHeroAt(currentHeroIndex);
 }
+
+
+void UniverseForm::loadFactsBlock() {
+    qDebug() << "[ФАКТЫ] Загрузка фактов для вселенной ID =" << universeId;
+
+    QSqlQuery query;
+    query.prepare(R"(
+        SELECT title, description, image
+        FROM UniverseFacts
+        WHERE id_universe = :id
+        LIMIT 3
+    )");
+    query.bindValue(":id", universeId);
+
+    if (!query.exec()) {
+        qDebug() << "[ФАКТЫ] Ошибка запроса:" << query.lastError().text();
+        return;
+    }
+
+    factsData.clear();
+
+    while (query.next()) {
+        FactData fact;
+        fact.title = query.value(0).toString();
+        fact.description = query.value(1).toString();
+        fact.imagePath = query.value(2).toString();
+
+        qDebug() << "[ФАКТЫ] Загружен факт:" << fact.title << "с картинкой:" << fact.imagePath;
+        factsData.append(fact);
+    }
+
+    if (factsData.isEmpty()) {
+        qDebug() << "[ФАКТЫ] Нет фактов для данной вселенной!";
+        return;
+    }
+
+    // Виджет блока
+    QWidget *block = new QWidget();
+    block->setFixedSize(1920, 1457);
+
+    // Фон
+    QLabel *backgroundLabel = new QLabel(block);
+    backgroundLabel->setFixedSize(1920, 1457);
+
+    QSqlQuery bgQuery;
+    bgQuery.prepare("SELECT main_image FROM Universe WHERE id_universe = :id");
+    bgQuery.bindValue(":id", universeId);
+    if (bgQuery.exec() && bgQuery.next()) {
+        QString bgImage = bgQuery.value(0).toString();
+        qDebug() << "Фоновое изображение блока героев:" << bgImage;
+        QPixmap bgPixmap(bgImage);
+        backgroundLabel->setPixmap(bgPixmap.scaled(backgroundLabel->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    } else {
+        qDebug() << "Ошибка при загрузке фонового изображения для блока героев.";
+    }
+
+    // Заголовок
+    QLabel *title = new QLabel("Интересные факты", block);
+    title->setFont(QFont("Cinzel", 90, QFont::Bold)); // уменьшен размер
+    title->setStyleSheet("color: white;");
+    title->adjustSize();
+    title->move((1920 - title->width()) / 2, 20); // поднят выше
+
+    // Карточка
+    factCard = new QWidget(block);
+    factCard->setFixedSize(1327, 810);
+    factCard->move((1920 - 1327) / 2, 190);
+    factCard->setStyleSheet("background-color: black; border-radius: 30px;");
+
+    // Левая кнопка
+    QPushButton *leftButton = new QPushButton(block);
+    leftButton->setFixedSize(127, 115);
+    leftButton->move((1920 / 2) - 127 - 40, 1059);
+    leftButton->setStyleSheet(R"(
+        QPushButton {
+            background-color: black;
+            border-radius: 20px;
+        }
+        QPushButton:hover {
+            background-color: rgba(0, 0, 0, 180);
+        }
+    )");
+    QLabel *leftIcon = new QLabel(leftButton);
+    leftIcon->setPixmap(QPixmap(":/symbols/Arrow.svg").scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    leftIcon->setFixedSize(80, 80);
+    leftIcon->move((127 - 80) / 2, (115 - 80) / 2);
+
+    // Правая кнопка
+    QPushButton *rightButton = new QPushButton(block);
+    rightButton->setFixedSize(127, 115);
+    rightButton->move((1920 / 2) + 40, 1059);
+    rightButton->setStyleSheet(R"(
+        QPushButton {
+            background-color: black;
+            border-radius: 20px;
+        }
+        QPushButton:hover {
+            background-color: rgba(0, 0, 0, 180);
+        }
+    )");
+    QPixmap rightPixmap(":/symbols/Arrow.svg");
+    rightPixmap = rightPixmap.transformed(QTransform().scale(-1, 1));
+    QLabel *rightIcon = new QLabel(rightButton);
+    rightIcon->setPixmap(rightPixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    rightIcon->setFixedSize(80, 80);
+    rightIcon->move((127 - 80) / 2, (115 - 80) / 2);
+
+    // Обработчики
+    connect(leftButton, &QPushButton::clicked, this, [this]() {
+        currentFactIndex = (currentFactIndex - 1 + factsData.size()) % factsData.size();
+        showFactAt(currentFactIndex);
+    });
+    connect(rightButton, &QPushButton::clicked, this, [this]() {
+        currentFactIndex = (currentFactIndex + 1) % factsData.size();
+        showFactAt(currentFactIndex);
+    });
+
+    verticalLayout->addWidget(block);
+
+    currentFactIndex = 0;
+    showFactAt(currentFactIndex);
+}
+
+
+void UniverseForm::showFactAt(int index) {
+    qDebug() << "[ФАКТЫ] Показ факта #" << index;
+
+    if (index < 0 || index >= factsData.size()) {
+        qDebug() << "[ФАКТЫ][ОШИБКА] Индекс вне диапазона!";
+        return;
+    }
+
+    // Полная очистка карточки
+    QList<QWidget*> children = factCard->findChildren<QWidget*>();
+    for (QWidget *child : children) {
+        delete child;
+    }
+
+    if (factCard->layout()) {
+        delete factCard->layout();
+    }
+
+    // Новый layout карточки
+    QHBoxLayout *cardLayout = new QHBoxLayout(factCard);
+    cardLayout->setContentsMargins(61, 44, 61, 44);
+    cardLayout->setSpacing(50);
+
+    // Картинка
+    QLabel *imageLabel = new QLabel();
+    imageLabel->setFixedSize(590, 722);
+    QPixmap factImg(factsData[index].imagePath);
+    if (factImg.isNull()) {
+        qDebug() << "[ФАКТЫ][ОШИБКА КАРТИНКИ] Не загружено:" << factsData[index].imagePath;
+        factImg = QPixmap(":/images/placeholder.png");
+    } else {
+        qDebug() << "[ФАКТЫ] Изображение загружено:" << factsData[index].imagePath;
+    }
+    imageLabel->setPixmap(factImg.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    cardLayout->addWidget(imageLabel);
+
+    // Текст
+    QVBoxLayout *textLayout = new QVBoxLayout();
+
+    QLabel *titleLabel = new QLabel(factsData[index].title);
+    titleLabel->setFont(QFont("Cinzel", 36, QFont::Bold));
+    titleLabel->setStyleSheet("color: white;");
+    titleLabel->setWordWrap(true);
+    textLayout->addWidget(titleLabel);
+
+    QLabel *descLabel = new QLabel(factsData[index].description);
+    descLabel->setFont(QFont("Inter", 28));
+    descLabel->setStyleSheet("color: white;");
+    descLabel->setWordWrap(true);
+    descLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    textLayout->addWidget(descLabel);
+
+    cardLayout->addLayout(textLayout);
+}
+

@@ -13,6 +13,13 @@ struct HeroData {
     QString imagePath;
 };
 
+struct FactData {
+    QString title;
+    QString description;
+    QString imagePath;
+};
+
+
 namespace Ui {
 class UniverseForm;
 }
@@ -58,6 +65,12 @@ private:
     QWidget *heroCard = nullptr;
     void showHeroAt(int index);
 
+    QVector<FactData> factsData;
+    int currentFactIndex = 0;
+    QWidget *factCard = nullptr;
+
+    void loadFactsBlock();
+    void showFactAt(int index);
 
 private slots:
     void showPreviousSlide();

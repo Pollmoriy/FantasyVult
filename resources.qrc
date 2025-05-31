@@ -65,5 +65,8 @@
         <file>slider/harrypotter.png</file>
         <file>slider/hermione.png</file>
         <file>slider/ron.png</file>
+        <file>slider/marauders_map.png</file>
+        <file>slider/phoenix.png</file>
+        <file>slider/potions.png</file>
     </qresource>
 </RCC>
