@@ -2,6 +2,7 @@
 #include "catalogform.h"
 #include "mainwindow.h"
 #include "testsform.h"
+#include "basemainwindow.h"
 #include "ui_favoriteform.h"
 #include <QFontDatabase>
 #include <QSqlDatabase>
@@ -22,8 +23,6 @@
 #include <QPushButton>
 #include <QStyle>
 #include "buttonstyles.h"
-
-
 
 // ==================== Создание карточки вселенной ====================
 QWidget* FavoriteForm::createUniverseCard(const QString &name, const QString &imagePath, QWidget *parent)
@@ -111,7 +110,6 @@ QWidget* FavoriteForm::createUniverseCard(const QString &name, const QString &im
     return cardWidget;
 }
 
-
 // ==================== Очистка всех карточек с экрана ====================
 void FavoriteForm::clearCards()
 {
@@ -145,7 +143,6 @@ void FavoriteForm::clearCards()
     ui->cardContainer->adjustSize();
 
 }
-
 
 // ==================== Загрузка и отображение только лайкнутых вселенных ====================
 void FavoriteForm::loadFavoriteUniverses()
@@ -201,8 +198,6 @@ void FavoriteForm::loadFavoriteUniverses()
     }
 }
 
-
-
 // ==================== // Активная кнопка навигации ====================
 void FavoriteForm::setActiveButton(QPushButton* newActive)
 {
@@ -218,51 +213,91 @@ void FavoriteForm::setActiveButton(QPushButton* newActive)
     activeButton->setStyleSheet(activeButtonStyle);
 }
 
-
 // ==================== // Переход на главную ====================
 void FavoriteForm::goToMain()
 {
-    setActiveButton(ui->btnMain); // Пример
+    setActiveButton(ui->btnMain);
+
     MainWindow* mw = new MainWindow(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    mw->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                    screenGeometry.width(), screenGeometry.height());
     mw->show();
-    this->close();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(mw, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(mw->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &FavoriteForm::close);
 }
 
-
-// ==================== // Переход на каталог ====================
 void FavoriteForm::goToCatalog()
 {
     setActiveButton(ui->btnCatalog);
-    CatalogForm* catalogform = new CatalogForm(this->userId);
-    catalogform->show();
-    this->close();
+
+    CatalogForm* catalog = new CatalogForm(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    catalog->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                         screenGeometry.width(), screenGeometry.height());
+    catalog->show();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(catalog, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(catalog->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &FavoriteForm::close);
 }
-
-
-// ==================== // Переход на любимую ====================
-void FavoriteForm::goToFavorite()
-{
-    setActiveButton(ui->btnFavorite);
-    FavoriteForm* fav = new FavoriteForm(this->userId);
-    fav->show();
-    this->close();
-}
-
-
 
 // ==================== // Переход на тесты ====================
 void FavoriteForm::goToTests()
 {
     setActiveButton(ui->btnTests);
+
     TestsForm* testsform = new TestsForm(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    testsform->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                           screenGeometry.width(), screenGeometry.height());
     testsform->show();
-    this->close();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(testsform, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(testsform->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &FavoriteForm::close);
 }
 
-
-
 FavoriteForm::FavoriteForm(int userId, QWidget *parent) :
-    QWidget(parent),
+     BaseMainWindow(parent),
     ui(new Ui::FavoriteForm),
     userId(userId) // инициализируем поле
 {
@@ -284,7 +319,6 @@ FavoriteForm::FavoriteForm(int userId, QWidget *parent) :
 
     connect(ui->btnMain, &QPushButton::clicked, this, &FavoriteForm::goToMain);
     connect(ui->btnCatalog, &QPushButton::clicked, this, &FavoriteForm::goToCatalog);
-    connect(ui->btnFavorite, &QPushButton::clicked, this, &FavoriteForm::goToFavorite);
     connect(ui->btnTests, &QPushButton::clicked, this, &FavoriteForm::goToTests);
 
 }

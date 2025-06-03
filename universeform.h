@@ -6,6 +6,7 @@
 #include <QScrollArea>
 #include <QStackedWidget>
 #include <QPushButton>
+#include "basemainwindow.h"
 
 struct HeroData {
     QString name;
@@ -24,7 +25,7 @@ namespace Ui {
 class UniverseForm;
 }
 
-class UniverseForm : public QWidget
+class UniverseForm : public BaseMainWindow
 {
     Q_OBJECT
 

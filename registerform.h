@@ -2,12 +2,13 @@
 #define REGISTERFORM_H
 
 #include <QWidget>
+#include "basemainwindow.h"
 
 namespace Ui {
 class RegisterForm;
 }
 
-class RegisterForm : public QWidget
+class RegisterForm : public BaseMainWindow
 {
     Q_OBJECT
 

@@ -5,6 +5,7 @@
 #include <QString>
 #include <QButtonGroup>
 #include <QFrame>
+#include "basemainwindow.h"
 
 struct AnswerOption {
     int id_answer;
@@ -22,7 +23,7 @@ namespace Ui {
 class TestForm;
 }
 
-class TestForm : public QWidget
+class TestForm : public BaseMainWindow
 {
     Q_OBJECT
 

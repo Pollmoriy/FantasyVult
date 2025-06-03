@@ -5,13 +5,14 @@
 #include <QSet>
 #include <QString>
 #include <QPushButton>
+#include "basemainwindow.h"
 
 
 namespace Ui {
 class FavoriteForm;
 }
 
-class FavoriteForm : public QWidget
+class FavoriteForm : public BaseMainWindow
 {
     Q_OBJECT
 
@@ -33,7 +34,6 @@ private:
 private slots:
     void goToMain();
     void goToCatalog();
-    void goToFavorite();
     void goToTests();
 
 };

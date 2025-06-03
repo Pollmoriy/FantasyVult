@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "favoriteform.h"
 #include "testsform.h"
+#include "basemainwindow.h"
 #include "universeform.h"
 #include "clickablelabel.h"
 #include "ui_catalogform.h"
@@ -25,8 +26,6 @@
 #include <QStyle>
 #include "buttonstyles.h"
 
-
-
 // ==================== // Активная кнопка навигации ====================
 void CatalogForm::setActiveButton(QPushButton* newActive)
 {
@@ -42,48 +41,91 @@ void CatalogForm::setActiveButton(QPushButton* newActive)
     activeButton->setStyleSheet(activeButtonStyle);
 }
 
-
 // ==================== // Переход на главную ====================
 void CatalogForm::goToMain()
 {
-    setActiveButton(ui->btnMain); // Пример
+    setActiveButton(ui->btnMain);
+
     MainWindow* mw = new MainWindow(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    mw->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                    screenGeometry.width(), screenGeometry.height());
     mw->show();
-    this->close();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(mw, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(mw->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &CatalogForm::close);
 }
 
-
-// ==================== // Переход на каталог ====================
-void CatalogForm::goToCatalog()
-{
-    setActiveButton(ui->btnCatalog);
-    CatalogForm* catalogform = new CatalogForm(this->userId);
-    catalogform->show();
-    this->close();
-}
-
-
-// ==================== // Переход на любимую ====================
+// ==================== // Переход на любимое ====================
 void CatalogForm::goToFavorite()
 {
     setActiveButton(ui->btnFavorite);
+
     FavoriteForm* fav = new FavoriteForm(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    fav->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                     screenGeometry.width(), screenGeometry.height());
     fav->show();
-    this->close();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(fav, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(fav->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &CatalogForm::close);
 }
-
-
 
 // ==================== // Переход на тесты ====================
 void CatalogForm::goToTests()
 {
     setActiveButton(ui->btnTests);
+
     TestsForm* testsform = new TestsForm(this->userId);
+
+    QRect screenGeometry = this->geometry();
+    testsform->setGeometry(screenGeometry.x() + screenGeometry.width(), screenGeometry.y(),
+                           screenGeometry.width(), screenGeometry.height());
     testsform->show();
-    this->close();
+
+    QPropertyAnimation* animNew = new QPropertyAnimation(testsform, "geometry");
+    animNew->setDuration(300);
+    animNew->setStartValue(testsform->geometry());
+    animNew->setEndValue(screenGeometry);
+    animNew->start(QAbstractAnimation::DeleteWhenStopped);
+
+    QPropertyAnimation* animOld = new QPropertyAnimation(this, "geometry");
+    animOld->setDuration(300);
+    animOld->setStartValue(screenGeometry);
+    animOld->setEndValue(QRect(screenGeometry.x() - screenGeometry.width(), screenGeometry.y(),
+                               screenGeometry.width(), screenGeometry.height()));
+    animOld->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animOld, &QPropertyAnimation::finished, this, &CatalogForm::close);
 }
 
-
+// ==================== // Переход на страницу вселенной ====================
 void CatalogForm::openUniverse(int universeId)
 {
     UniverseForm* universeForm = new UniverseForm();
@@ -91,9 +133,6 @@ void CatalogForm::openUniverse(int universeId)
     universeForm->show();
     this->close(); // или hide()
 }
-
-
-
 
 // ==================== Создание карточки вселенной ====================
 QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &imagePath, QWidget *parent)
@@ -220,7 +259,6 @@ QWidget* CatalogForm::createUniverseCard(const QString &name, const QString &ima
     return cardWidget;
 }
 
-
 // ==================== Очистка всех карточек с экрана ====================
 void CatalogForm::clearCards()
 {
@@ -252,7 +290,6 @@ void CatalogForm::clearCards()
     }
 }
 
-
 // ==================== Загрузка лайкнутых карточек====================
 void CatalogForm::loadLikedUniverses()
 {
@@ -269,8 +306,6 @@ void CatalogForm::loadLikedUniverses()
     }
 
 }
-
-
 
 // ==================== Загрузка и отображение карточек по фильтру ====================
 void CatalogForm::loadUniverses(const QString& filter)
@@ -340,7 +375,6 @@ void CatalogForm::loadUniverses(const QString& filter)
     this->foundCardsCount = cardCount;
 }
 
-
 // ==================== Обработчик кнопки поиска ====================
 void CatalogForm::onSearchButtonClicked()
 {
@@ -356,7 +390,6 @@ void CatalogForm::onSearchButtonClicked()
         loadUniverses("");
     }
 }
-
 
 // ==================== Вызов ошибки поиска ====================
 void CatalogForm::showNoResultsDialog(const QString& searchText)
@@ -426,7 +459,6 @@ void CatalogForm::showNoResultsDialog(const QString& searchText)
     dialog.exec();
 }
 
-
 // ==================== Отображение окна тегов ====================
 void CatalogForm::toggleFilterFrame()
 {
@@ -436,8 +468,6 @@ void CatalogForm::toggleFilterFrame()
         ui->tagsFrame->show();
     }
 }
-
-
 
 // ==================== Реализация слота нажатия на кнопку тега ====================
 void CatalogForm::onTagButtonClicked() {
@@ -466,10 +496,6 @@ void CatalogForm::onTagButtonClicked() {
 
     qDebug() << "Выбранные теги:" << selectedTags;
 }
-
-
-
-
 
 // ==================== Функция для установки начального стиля кнопки ====================
 void CatalogForm::setupTagButton(QPushButton* button) {
@@ -501,9 +527,6 @@ void CatalogForm::setupTagButton(QPushButton* button) {
     connect(button, &QPushButton::clicked, this, &CatalogForm::onTagButtonClicked);
 }
 
-
-
-
 // ==================== // Функция для подключения сигнала к слоту ====================
 void CatalogForm::connectTagButton(QPushButton* button) {
     connect(button, &QPushButton::clicked, this, [=]() {
@@ -516,7 +539,6 @@ void CatalogForm::connectTagButton(QPushButton* button) {
         button->update();
     });
 }
-
 
 // ==================== Очистка всех выбранных тегов ====================
 void CatalogForm::clearTagSelection()
@@ -540,7 +562,6 @@ void CatalogForm::clearTagSelection()
     selectedTags.clear();
 }
 
-
 // ==================== // Применение фильтрации по тегам ====================
 void CatalogForm::applyTagSelection()
 {
@@ -560,9 +581,6 @@ void CatalogForm::applyTagSelection()
     loadUniversesByTags(tagsList);
     ui->tagsFrame->hide();
 }
-
-
-
 
 // ==================== // Фильтрация по тегам ====================
 void CatalogForm::loadUniversesByTags(const QStringList& tagsList)
@@ -634,10 +652,8 @@ void CatalogForm::loadUniversesByTags(const QStringList& tagsList)
     }
 }
 
-
-
 CatalogForm::CatalogForm(int userId, QWidget *parent)
-    : QWidget(parent),  // если наследуетесь от QWidget
+    :  BaseMainWindow(parent), // если наследуетесь от QWidget
     ui(new Ui::CatalogForm),
     userId(userId)
 {
@@ -738,6 +754,7 @@ CatalogForm::CatalogForm(int userId, QWidget *parent)
 
     // Подключаем сигнал кнопки поиска к слоту
     connect(ui->searchButton, &QPushButton::clicked, this, &CatalogForm::onSearchButtonClicked);
+    connect(ui->searchLineEdit, &QLineEdit::returnPressed, this, &CatalogForm::onSearchButtonClicked);
     connect(ui->filterButton, &QPushButton::clicked, this, &CatalogForm::toggleFilterFrame);
     connect(ui->btnCloseTagsWindow, &QPushButton::clicked, this, &CatalogForm::toggleFilterFrame);
    connect(ui->btnClearSelection, &QPushButton::clicked, this, &CatalogForm::clearTagSelection);
@@ -745,7 +762,6 @@ CatalogForm::CatalogForm(int userId, QWidget *parent)
 
 
    connect(ui->btnMain, &QPushButton::clicked, this, &CatalogForm::goToMain);
-   connect(ui->btnCatalog, &QPushButton::clicked, this, &CatalogForm::goToCatalog);
    connect(ui->btnFavorite, &QPushButton::clicked, this, &CatalogForm::goToFavorite);
    connect(ui->btnTests, &QPushButton::clicked, this, &CatalogForm::goToTests);
 

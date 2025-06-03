@@ -1,6 +1,7 @@
 #include "registerform.h"
 #include "ui_registerform.h"
 #include "mainwindow.h"
+#include "basemainwindow.h"
 #include <QPixmap>
 #include <QGraphicsDropShadowEffect>
 #include <QFontDatabase>
@@ -11,10 +12,6 @@
 #include <QCryptographicHash>
 #include <QRegularExpression>
 #include "utils.h"
-
-
-//Регистрация, проверка пароля и почты. Хэшширование
-
 
 // ==================== // Проверка пароля ====================//
 bool isPasswordStrong(const QString &password) {
@@ -29,7 +26,6 @@ bool isPasswordStrong(const QString &password) {
 
     return true;
 }
-
 
 // ==================== // Обработка Регистрации ====================//
 void RegisterForm::on_registerButton_clicked() {
@@ -111,8 +107,6 @@ void RegisterForm::on_registerButton_clicked() {
 
 }
 
-
-
 // ==================== // Обработка перехода на страницу авторизации ====================//
 void RegisterForm::onReturnButtonClicked()
 {
@@ -125,7 +119,6 @@ void RegisterForm::onReturnButtonClicked()
     // Закрываем форму авторизации
     this->close();
 }
-
 
 // ==================== // Отображение пароля в виде звездочек ====================//
 void RegisterForm::togglePasswordVisibility()
@@ -142,6 +135,7 @@ void RegisterForm::togglePasswordVisibility()
 
     }
 }
+
 void RegisterForm::togglePasswordVisibility2()
 {
     passwordVisible = !passwordVisible;
@@ -157,11 +151,8 @@ void RegisterForm::togglePasswordVisibility2()
     }
 }
 
-
-
 RegisterForm::RegisterForm(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::RegisterForm)
+    :  BaseMainWindow(parent), ui(new Ui::RegisterForm)
 {
     ui->setupUi(this);
 

@@ -1,7 +1,7 @@
 #include "testform.h"
 #include "ui_testform.h"
 #include "resultdialog.h"
-
+#include "basemainwindow.h"
 #include <QFontDatabase>
 #include <QDebug>
 #include <QSqlQuery>
@@ -17,9 +17,8 @@
 #include <QMessageBox>
 #include <QScrollBar>
 
-
 TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget *parent)
-    : QWidget(parent), userId(userId), universeId(universeId), testName(testName),
+    : BaseMainWindow(parent), userId(userId), universeId(universeId), testName(testName),
     ui(new Ui::TestForm)
 {
     ui->setupUi(this);
@@ -114,7 +113,7 @@ TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget 
 
 }
 
-
+// ==================== // Создание карточки вопроса для теста ====================
 QFrame* TestForm::createQuestionCard(int id_question, const QString& questionText, const QList<AnswerOption>& answers)
 {
     QFrame* card = new QFrame;
@@ -200,8 +199,7 @@ QFrame* TestForm::createQuestionCard(int id_question, const QString& questionTex
     return card;
 }
 
-
-
+// ==================== // Загрузка всех карточек вопросов для теста ====================
 void TestForm::loadUniverseTitle()
 {
     QString universeName;
@@ -242,7 +240,7 @@ void TestForm::loadUniverseTitle()
     layout->insertWidget(0, nameLabel, 0, Qt::AlignTop);
 }
 
-
+// ==================== // Получение вариантов ответа для вопроса из БД ====================
 QStringList TestForm::getAnswersByQuestionId(int id_question)
 {
     QStringList answers;
@@ -262,6 +260,7 @@ QStringList TestForm::getAnswersByQuestionId(int id_question)
     return answers;
 }
 
+// ==================== // Получение правильного ответа для вопроса из БД ====================
 void TestForm::loadCorrectAnswers()
 {
     correctAnswers.clear();
@@ -289,7 +288,7 @@ void TestForm::loadCorrectAnswers()
     }
 }
 
-
+// ==================== // Сохранение результата теста ====================
 void TestForm::saveTestResult()
 {
     QSqlDatabase::database().transaction();  // начало транзакции
@@ -345,9 +344,7 @@ void TestForm::saveTestResult()
     lockAndColorAnswers();
 }
 
-
-
-
+// ==================== // Обозначение правильных и неправильных ответов ====================
 void TestForm::lockAndColorAnswers()
 {
     // Пройдёмся по всем группам вопросов
@@ -394,6 +391,7 @@ void TestForm::lockAndColorAnswers()
     }
 }
 
+// ==================== // Сохранение результата теста для пользователя ====================
 void TestForm::saveUserAnswers()
 {
     // Удалим старые записи (если пользователь перепроходил тест)
@@ -420,6 +418,7 @@ void TestForm::saveUserAnswers()
     qDebug() << "Ответы пользователя сохранены.";
 }
 
+// ==================== // Конец теста ====================
 void TestForm::finishTest()
 {
     int totalQuestionsCount = 10;
@@ -448,12 +447,9 @@ void TestForm::finishTest()
 
     qDebug() << "Правильных ответов:" << correctCount << "/" << userAnswers.size();
 
-    // Блокируем радиокнопки и подсвечиваем ответы
-    lockAndColorAnswers();
 }
 
-
-
+// ==================== // Перезапуск теста ====================
 void TestForm::restartTest()
 {
     userAnswers.clear();
@@ -504,11 +500,6 @@ void TestForm::restartTest()
 
     qDebug() << "Тест перезапущен, ответы очищены и стили сброшены";
 }
-
-
-
-
-
 
 TestForm::~TestForm()
 {

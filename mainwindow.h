@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include "basemainwindow.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -11,7 +12,7 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class MainWindow : public BaseMainWindow
 {
     Q_OBJECT
 
@@ -28,7 +29,6 @@ private:
 
 
 private slots:
-    void goToMain();
     void goToCatalog();
     void goToFavorite();
     void goToTests();

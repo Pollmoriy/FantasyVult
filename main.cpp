@@ -4,7 +4,6 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QDebug>
-#include "testsform.h"
 
 
 int main(int argc, char *argv[])
@@ -21,15 +20,8 @@ int main(int argc, char *argv[])
     } else {
         qDebug() << "База данных успешно подключена!";
     }
-
-    int userId = 2;  // или передай реальный userId
-    TestsForm m(userId);
+    LoginForm m;
     m.show();
     QSqlQuery query;
-
-
-
-
-
     return a.exec();
 }

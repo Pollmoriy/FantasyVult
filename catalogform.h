@@ -1,5 +1,6 @@
 #ifndef CATALOGFORM_H
 #define CATALOGFORM_H
+#include "basemainwindow.h"
 
 #include <QWidget>
 #include <QLabel>
@@ -10,7 +11,7 @@ namespace Ui {
 class CatalogForm;
 }
 
-class CatalogForm : public QWidget
+class CatalogForm : public BaseMainWindow
 {
     Q_OBJECT
 
@@ -33,7 +34,6 @@ private slots:
      void applyTagSelection();
 
     void goToMain();
-    void goToCatalog();
     void goToFavorite();
     void goToTests();
 

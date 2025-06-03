@@ -1,6 +1,7 @@
 #include "LoginForm.h"
 #include "ui_LoginForm.h"
 #include "mainwindow.h"
+#include "basemainwindow.h"
 #include "utils.h"
 #include <QPixmap>
 #include <QGraphicsDropShadowEffect>
@@ -11,8 +12,6 @@
 #include <QSqlError>
 #include <QCryptographicHash>
 
-
-
 // ==================== // Обработка нажатия кнопки "Зашел впервые" ====================//
 void LoginForm::onFirstTimeButtonClicked()
 {
@@ -20,7 +19,6 @@ void LoginForm::onFirstTimeButtonClicked()
     registerForm->show();
     this->close();
 }
-
 
 // ==================== // Обработка нажатия кнопки "Войти" ====================//
 void LoginForm::onLoginButtonClicked()
@@ -82,7 +80,6 @@ void LoginForm::onLoginButtonClicked()
     }
 }
 
-
 // ==================== // Отображение пароля в виде звездочек ====================//
 void LoginForm::togglePasswordVisibility()
 {
@@ -99,11 +96,8 @@ void LoginForm::togglePasswordVisibility()
     }
 }
 
-
-
-
 LoginForm::LoginForm(QWidget *parent) :
-    QWidget(parent),
+     BaseMainWindow(parent),
     ui(new Ui::LoginForm)
 {
 

@@ -1,7 +1,7 @@
 #include "universeform.h"
 #include "ui_universeform.h"
 #include "catalogform.h"
-
+#include "basemainwindow.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QLabel>
@@ -12,7 +12,7 @@
 #include <QSqlDatabase>
 
 UniverseForm::UniverseForm(QWidget *parent)
-    : QWidget(parent)
+    : BaseMainWindow(parent)
     , ui(new Ui::UniverseForm)
 {
     ui->setupUi(this);
@@ -32,6 +32,7 @@ UniverseForm::~UniverseForm()
     delete ui;
 }
 
+// ==================== // Загрузка всех данных из БД ====================
 void UniverseForm::setData(int userId, int universeId)
 {
     this->userId = userId;
@@ -64,6 +65,7 @@ void UniverseForm::setData(int userId, int universeId)
 
 }
 
+// ==================== // Загрузка главного блока ====================
 void UniverseForm::loadFirstBlock()
 {
     QSqlQuery query;
@@ -125,7 +127,7 @@ void UniverseForm::loadFirstBlock()
     }
 }
 
-
+// ==================== // Загрузка блока введение ====================
 void UniverseForm::loadMainTextBlock()
 {
     QSqlQuery query;
@@ -212,7 +214,7 @@ void UniverseForm::loadMainTextBlock()
     }
 }
 
-
+// ==================== // Загрузка блока о мире и географии ====================
 void UniverseForm::loadWorldGeographyBlock()
 {
     QSqlQuery query;
@@ -285,7 +287,7 @@ void UniverseForm::loadWorldGeographyBlock()
     }
 }
 
-
+// ==================== // Загрузка блока места ====================
 void UniverseForm::loadPlacesSliderBlock()
 {
     QSqlQuery query;
@@ -402,7 +404,6 @@ QPushButton:hover {
     verticalLayout->addWidget(block);
 }
 
-
 void UniverseForm::showPreviousSlide()
 {
     if (!sliderStackWidget) return;
@@ -417,7 +418,7 @@ void UniverseForm::showNextSlide()
     sliderStackWidget->setCurrentIndex(currentSlideIndex);
 }
 
-
+// ==================== // Загрузка блока героев ====================
 void UniverseForm::loadHeroesBlock() {
 
     qDebug() << "Загрузка блока героев для вселенной с ID:" << universeId;
@@ -605,8 +606,6 @@ void UniverseForm::showHeroAt(int index) {
     cardLayout->addLayout(textLayout);
 }
 
-
-
 void UniverseForm::showPreviousHero()
 {
     if (heroesData.isEmpty()) return;
@@ -621,7 +620,7 @@ void UniverseForm::showNextHero()
     showHeroAt(currentHeroIndex);
 }
 
-
+// ==================== // Загрузка блока фактов ====================
 void UniverseForm::loadFactsBlock() {
     qDebug() << "[ФАКТЫ] Загрузка фактов для вселенной ID =" << universeId;
 
@@ -743,7 +742,6 @@ void UniverseForm::loadFactsBlock() {
     showFactAt(currentFactIndex);
 }
 
-
 void UniverseForm::showFactAt(int index) {
     qDebug() << "[ФАКТЫ] Показ факта #" << index;
 
@@ -799,6 +797,7 @@ void UniverseForm::showFactAt(int index) {
     cardLayout->addLayout(textLayout);
 }
 
+// ==================== // Загрузка блока с лайком и кнопкой возврата ====================
 void UniverseForm::addLikeBlock(const QString &universeName) {
     QWidget *likeBlock = new QWidget();
     likeBlock->setFixedSize(1920, 207);
@@ -902,7 +901,6 @@ void UniverseForm::addLikeBlock(const QString &universeName) {
 
     verticalLayout->addWidget(likeBlock);
 }
-
 
 void UniverseForm::goToCatalog() {
     CatalogForm *catalogForm = new CatalogForm(userId);

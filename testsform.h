@@ -7,12 +7,13 @@
 #include <QFrame>
 #include <QVector>
 #include <QFrame>
+#include "basemainwindow.h"
 
 namespace Ui {
 class TestsForm;
 }
 
-class TestsForm : public QWidget
+class TestsForm : public BaseMainWindow
 {
     Q_OBJECT
 
@@ -33,12 +34,10 @@ private:
     void showNoResultsDialog(const QString& searchText);
  QSet<int> passedTestsSet;
 
-
 private slots:
     void goToMain();
     void goToCatalog();
     void goToFavorite();
-    void goToTests();
     void goToTest(int universeId, const QString& testName, QPushButton* questStatusButton);
 
 };
