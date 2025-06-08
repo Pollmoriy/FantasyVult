@@ -30,6 +30,8 @@ private:
     void setActiveButton(QPushButton* newActive);
      int userId;
     QWidget* createUniverseCard(const QString &name, const QString &imagePath, QWidget *parent);
+     void openUniverse(int universeId);
+
 
 private slots:
     void goToMain();

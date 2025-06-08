@@ -4,6 +4,8 @@
 #include "testsform.h"
 #include "basemainwindow.h"
 #include "ui_favoriteform.h"
+#include "universeform.h"
+#include "clickablelabel.h"
 #include <QFontDatabase>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -36,7 +38,7 @@ QWidget* FavoriteForm::createUniverseCard(const QString &name, const QString &im
     universeCard->setStyleSheet("background-color: transparent;");
     universeCard->setFixedSize(566, 372);
 
-    QLabel *imageLabel = new QLabel(universeCard);
+    ClickableLabel *imageLabel = new ClickableLabel(universeCard);
     imageLabel->setFixedSize(566, 321);
     QPixmap pixmap(imagePath);
     if (pixmap.isNull()) {
@@ -45,6 +47,22 @@ QWidget* FavoriteForm::createUniverseCard(const QString &name, const QString &im
     imageLabel->setPixmap(pixmap.scaled(imageLabel->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     imageLabel->setStyleSheet("border: none;");
     imageLabel->setGeometry(0, 0, 566, 321);
+
+    connect(imageLabel, &ClickableLabel::clicked, this, [=]() {
+        QSqlQuery idQuery;
+        idQuery.prepare("SELECT id_universe FROM Universe WHERE name = :name");
+        idQuery.bindValue(":name", name);
+        if (!idQuery.exec() || !idQuery.next()) {
+            qDebug() << "Не удалось получить id_universe для перехода:" << name;
+            return;
+        }
+
+        int universeId = idQuery.value(0).toInt();
+        UniverseForm* universeForm = new UniverseForm();
+        universeForm->setData(userId, universeId);
+        universeForm->show();
+        this->close();
+    });
 
     // Кнопка лайка
     QPushButton *likeButton = new QPushButton(universeCard);
@@ -84,6 +102,7 @@ QWidget* FavoriteForm::createUniverseCard(const QString &name, const QString &im
             loadFavoriteUniverses();
         }
     });
+
 
 
 
@@ -196,6 +215,15 @@ void FavoriteForm::loadFavoriteUniverses()
             rowIndex++;
         }
     }
+}
+
+// ==================== // Переход на страницу вселенной ====================
+    void FavoriteForm::openUniverse(int universeId)
+{
+    UniverseForm* universeForm = new UniverseForm();
+    universeForm->setData(userId, universeId);
+    universeForm->show();
+    this->close(); // или hide()
 }
 
 // ==================== // Активная кнопка навигации ====================
