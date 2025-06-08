@@ -11,6 +11,7 @@
 #include <QFontDatabase>
 #include <QSqlDatabase>
 #include <QDir>
+#include <QFileInfo>
 
 UniverseForm::UniverseForm(QWidget *parent)
     : BaseMainWindow(parent)
@@ -752,6 +753,7 @@ void UniverseForm::loadFactsBlock() {
     currentFactIndex = 0;
     showFactAt(currentFactIndex);
 }
+
 void UniverseForm::showFactAt(int index) {
     qDebug() << "[ФАКТЫ] Показ факта #" << index;
 
@@ -778,13 +780,20 @@ void UniverseForm::showFactAt(int index) {
     // Картинка
     QLabel *imageLabel = new QLabel();
     imageLabel->setFixedSize(590, 722);
-    QPixmap factImg(factsData[index].imagePath);
-    if (factImg.isNull()) {
-        qDebug() << "[ФАКТЫ][ОШИБКА КАРТИНКИ] Не загружено:" << factsData[index].imagePath;
-        factImg = QPixmap(":/images/placeholder.png");
-    } else {
-        qDebug() << "[ФАКТЫ] Изображение загружено:" << factsData[index].imagePath;
+
+    QString imagePath = factsData[index].imagePath;
+    QPixmap factImg;
+
+    // Пробуем загрузить изображение из папки на диске
+    if (!factImg.load(imagePath)) {
+        qDebug() << "[ФАКТЫ][ОШИБКА КАРТИНКИ] Не удалось загрузить:" << imagePath;
+        factImg.load(":/images/placeholder.png"); // fallback из ресурсов
     }
+
+    QString fullPath = QDir::current().absoluteFilePath(imagePath);
+    qDebug() << "[ФАКТЫ] Пытаюсь загрузить картинку по пути:" << fullPath;
+    qDebug() << "[ФАКТЫ] Текущая рабочая директория:" << QDir::currentPath();
+
     imageLabel->setPixmap(factImg.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     cardLayout->addWidget(imageLabel);
 
