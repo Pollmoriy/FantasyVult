@@ -10,6 +10,7 @@
 #include <QFont>
 #include <QFontDatabase>
 #include <QSqlDatabase>
+#include <QDir>
 
 UniverseForm::UniverseForm(QWidget *parent)
     : BaseMainWindow(parent)
@@ -562,18 +563,16 @@ void UniverseForm::showHeroAt(int index) {
         return;
     }
 
-    // Удаляем все дочерние виджеты heroCard (очистка от предыдущих карточек)
+    // Очистка от предыдущих виджетов
     QList<QWidget*> children = heroCard->findChildren<QWidget*>();
     for (QWidget *child : children) {
         delete child;
     }
 
-    // Удаляем layout, если есть (чтобы избежать конфликта)
     if (heroCard->layout()) {
         delete heroCard->layout();
     }
 
-    // Создаем новый layout для карточки
     QHBoxLayout *cardLayout = new QHBoxLayout(heroCard);
     cardLayout->setContentsMargins(61, 44, 61, 44);
     cardLayout->setSpacing(50);
@@ -581,15 +580,27 @@ void UniverseForm::showHeroAt(int index) {
     // Картинка героя
     QLabel *imageLabel = new QLabel();
     imageLabel->setFixedSize(501, 690);
-    QPixmap heroImg(heroesData[index].imagePath);
-    if (heroImg.isNull()) {
-        qDebug() << "Ошибка загрузки изображения героя:" << heroesData[index].imagePath;
-        heroImg = QPixmap(":/images/placeholder.png");
+
+    QString imagePath = heroesData[index].imagePath;
+    QPixmap heroImg;
+
+
+    // Пробуем загрузить изображение из обычной папки
+    if (!heroImg.load(imagePath)) {
+        qDebug() << "Не удалось загрузить:" << imagePath;
+        heroImg.load(":/images/placeholder.png"); // fallback из ресурсов, если нет картинки
     }
+    QString fullPath = QDir::current().absoluteFilePath(heroesData[index].imagePath);
+    qDebug() << "Пытаюсь загрузить картинку по пути:" << fullPath;
+
+    QPixmap heroImg1(fullPath);
+
+    qDebug() << "Текущая рабочая директория:" << QDir::currentPath();
+
     imageLabel->setPixmap(heroImg.scaled(imageLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     cardLayout->addWidget(imageLabel);
 
-    // Текст героя
+    // Текст
     QVBoxLayout *textLayout = new QVBoxLayout();
     QLabel *nameLabel = new QLabel(heroesData[index].name);
     nameLabel->setFont(QFont("Inter", 35, QFont::Bold));
@@ -741,7 +752,6 @@ void UniverseForm::loadFactsBlock() {
     currentFactIndex = 0;
     showFactAt(currentFactIndex);
 }
-
 void UniverseForm::showFactAt(int index) {
     qDebug() << "[ФАКТЫ] Показ факта #" << index;
 

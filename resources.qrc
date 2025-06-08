@@ -36,6 +36,19 @@
         <file>images/elden_small.png</file>
         <file>images/harrypotter_universe.png</file>
         <file>images/singin_img.jpg</file>
+        <file>images/lotr_universe.png</file>
+        <file>images/got_universe.png</file>
+        <file>images/witcher_universe.png</file>
+        <file>images/narnia_universe.png</file>
+        <file>images/grishaverse_universe.png</file>
+        <file>images/dragonage_universe.png</file>
+        <file>images/arcane_universe.png</file>
+        <file>images/elderscrolls_universe.png</file>
+        <file>images/wow_universe.png</file>
+        <file>images/naruto_universe.png</file>
+        <file>images/dnd_universe.png</file>
+        <file>images/avatar_universe.png</file>
+        <file>images/finalfantasy_universe.png</file>
     </qresource>
     <qresource lang="&lt;RCC>&#xa;    &lt;qresource prefix=&quot;/fonts&quot;>&#xa;        &lt;file>fonts/Raleway-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Roboto-Regular.ttf&lt;/file>&#xa;        &lt;file>fonts/Cinzel-Regular.ttf&lt;/file>&#xa;    &lt;/qresource>&#xa;&lt;/RCC>&#xa;" prefix="/">
         <file>fonts/CinzelDecorative-Bold.ttf</file>
@@ -63,11 +76,34 @@
         <file>slider/diagonalley.png</file>
         <file>slider/forbiddenforest.png</file>
         <file>slider/hogwarts.png</file>
-        <file>slider/harrypotter.png</file>
-        <file>slider/hermione.png</file>
-        <file>slider/ron.png</file>
         <file>slider/marauders_map.png</file>
         <file>slider/phoenix.png</file>
         <file>slider/potions.png</file>
+        <file>slider/thewall.png</file>
+        <file>slider/kingslanding.png</file>
+        <file>slider/mordor.png</file>
+        <file>slider/rivendell.png</file>
+        <file>slider/airtemple.png</file>
+        <file>slider/baldursgate.png</file>
+        <file>slider/ba-sing-se.png</file>
+        <file>slider/cairparavel.png</file>
+        <file>slider/ferelden.png</file>
+        <file>slider/imperialcity.png</file>
+        <file>slider/kaermorhen.png</file>
+        <file>slider/konoha.png</file>
+        <file>slider/magetower.png</file>
+        <file>slider/midgar.png</file>
+        <file>slider/novigrad.png</file>
+        <file>slider/orgrimmar.png</file>
+        <file>slider/palace.png</file>
+        <file>slider/piltover.png</file>
+        <file>slider/skyrim.png</file>
+        <file>slider/stormwind.png</file>
+        <file>slider/underdark.png</file>
+        <file>slider/valley.png</file>
+        <file>slider/wardrobe.png</file>
+        <file>slider/zanarkand.png</file>
+        <file>slider/zaun.png</file>
+        <file>slider/fold.png</file>
     </qresource>
 </RCC>

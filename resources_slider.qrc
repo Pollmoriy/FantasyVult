@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/&lt;RCC>&#xa;  &lt;qresource prefix=&quot;/images&quot;>&#xa;    &lt;file>images/slider/harry.png&lt;/file>&#xa;    &lt;file>images/slider/hermione.png&lt;/file>&#xa;    &lt;file>images/slider/kaz.png&lt;/file>&#xa;    &lt;file>images/slider/yennefer.png&lt;/file>&#xa;  &lt;/qresource>&#xa;&lt;/RCC>&#xa;">
+        <file>slider/aang.png</file>
+        <file>slider/alina.png</file>
+        <file>slider/arthas.png</file>
+        <file>slider/aslan.png</file>
+        <file>slider/ciri.png</file>
+        <file>slider/cloud.png</file>
+        <file>slider/daenerys.png</file>
+        <file>slider/dovahkiin.png</file>
+        <file>slider/drizzt.png</file>
+        <file>slider/frodo.png</file>
+        <file>slider/gandalf.png</file>
+        <file>slider/geralt.png</file>
+        <file>slider/harrypotter.png</file>
+        <file>slider/hawke.png</file>
+        <file>slider/hermione.png</file>
+        <file>slider/jinx.png</file>
+        <file>slider/jon.png</file>
+        <file>slider/katara.png</file>
+        <file>slider/kaz.png</file>
+        <file>slider/lucy.png</file>
+        <file>slider/minsc.png</file>
+        <file>slider/morrigan.png</file>
+        <file>slider/naruto.png</file>
+        <file>slider/ron.png</file>
+        <file>slider/sasuke.png</file>
+        <file>slider/serana.png</file>
+        <file>slider/thrall.png</file>
+        <file>slider/tifa.png</file>
+        <file>slider/vi.png</file>
+    </qresource>
+</RCC>

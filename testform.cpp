@@ -39,7 +39,7 @@ TestForm::TestForm(int userId, int universeId, const QString& testName, QWidget 
 
     // Получение id_tests
     QSqlQuery testIdQuery;
-    testIdQuery.prepare("SELECT id_tests FROM Tests WHERE test_name = :name AND id_universe = :universeId");
+    testIdQuery.prepare("SELECT id_tests FROM Tests WHERE test_name = :name");
     testIdQuery.bindValue(":name", testName);
     testIdQuery.bindValue(":universeId", universeId);
 
